@@ -1,3 +1,5 @@
+import { faCircleExclamation } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Control,
   FieldPath,
@@ -15,12 +17,22 @@ export type TControl<T extends FieldValues> = {
   >;
   placeholder: string;
   type: string;
+  showError?: boolean;
 };
 
-function Input({ control, name, rules, placeholder, type }: TControl<any>) {
+function Input({
+  control,
+  name,
+  rules,
+  placeholder,
+  type,
+  showError = false,
+}: TControl<any>) {
   const {
     field: { onChange, value },
+    fieldState: { error },
   } = useController({ name, rules, control });
+
   return (
     <div className="border relative rounded-md overflow-hidden p-2 flex justify-center items-center">
       <input
@@ -31,6 +43,11 @@ function Input({ control, name, rules, placeholder, type }: TControl<any>) {
         onChange={onChange}
         value={value}
       />
+      {showError && error && (
+        <div className="absolute right-4 flex justify-center items-center">
+          <FontAwesomeIcon icon={faCircleExclamation} color="red" />
+        </div>
+      )}
       <div className="absolute inset-0 bg-gray-50 -z-10 p-2 text-xs flex items-center text-gray-400">
         <span
           className={`absolute ${

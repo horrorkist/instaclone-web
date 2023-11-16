@@ -1,7 +1,19 @@
+import useUser from "./hooks/useUser";
+import Splash from "./screens/Splash";
+import SideBar from "./components/SideBar";
+import { Outlet } from "react-router-dom";
+
 function Root() {
+  const { data, loading } = useUser();
+
+  if (loading) {
+    return <Splash />;
+  }
+
   return (
-    <div className="bg-white text-black dark:text-white dark:bg-black h-screen w-screen text-3xl flex justify-center items-center">
-      homeaa
+    <div className="w-screen h-screen relative">
+      <SideBar />
+      <Outlet />
     </div>
   );
 }
