@@ -11,7 +11,7 @@ function Root() {
   }
 
   return (
-    <div className="w-screen h-screen relative">
+    <div className="w-screen relative flex justify-center">
       <SideBar />
       <Outlet />
     </div>

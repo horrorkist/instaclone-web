@@ -13,8 +13,11 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  query uploadUrl {\n    getUploadUrl\n  }\n": types.UploadUrlDocument,
+    "\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n": types.EditAvatarDocument,
     "\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n      }\n    }\n  }\n": types.MeDocument,
     "\n  mutation login ($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    ok\n    error\n    token\n  }\n}\n": types.LoginDocument,
+    "\n  query user($username: String!) {\n    getUserByUserName(username: $username) {\n      ok\n      error\n      user {\n        id\n        firstName\n        lastName\n        username\n        bio\n        avatar\n        photos {\n          id\n          url\n          likesCount\n          commentsCount\n          isLiked\n        }\n        totalPhotos\n        totalFollowing\n        totalFollowers\n        isMe\n        isFollowing\n      }\n    }\n  }\n": types.UserDocument,
     "\n  mutation createAccount(\n    $firstName: String!\n    $lastName: String\n    $username: String!\n    $email: String!\n    $password: String!\n  ) {\n    createAccount(\n      firstName: $firstName\n      lastName: $lastName\n      username: $username\n      email: $email\n      password: $password\n    ) {\n      ok\n      error\n    }\n  }\n": types.CreateAccountDocument,
 };
 
@@ -35,11 +38,23 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "\n  query uploadUrl {\n    getUploadUrl\n  }\n"): (typeof documents)["\n  query uploadUrl {\n    getUploadUrl\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n      }\n    }\n  }\n"): (typeof documents)["\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  mutation login ($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    ok\n    error\n    token\n  }\n}\n"): (typeof documents)["\n  mutation login ($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    ok\n    error\n    token\n  }\n}\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query user($username: String!) {\n    getUserByUserName(username: $username) {\n      ok\n      error\n      user {\n        id\n        firstName\n        lastName\n        username\n        bio\n        avatar\n        photos {\n          id\n          url\n          likesCount\n          commentsCount\n          isLiked\n        }\n        totalPhotos\n        totalFollowing\n        totalFollowers\n        isMe\n        isFollowing\n      }\n    }\n  }\n"): (typeof documents)["\n  query user($username: String!) {\n    getUserByUserName(username: $username) {\n      ok\n      error\n      user {\n        id\n        firstName\n        lastName\n        username\n        bio\n        avatar\n        photos {\n          id\n          url\n          likesCount\n          commentsCount\n          isLiked\n        }\n        totalPhotos\n        totalFollowing\n        totalFollowers\n        isMe\n        isFollowing\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

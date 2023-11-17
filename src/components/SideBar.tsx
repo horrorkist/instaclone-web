@@ -1,10 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faCompass,
-  faHome,
-  faSearch,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faHome, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import SideBarItem from "./SideBarItem";
@@ -15,7 +10,11 @@ function SideBar() {
   const [expanded, setExpanded] = useState(true);
 
   return (
-    <aside className={`${expanded ? "w-80" : "w-20"} h-screen duration-500`}>
+    <aside
+      className={`${
+        expanded ? "w-80" : "w-20"
+      } h-screen duration-500 bg-white fixed top-0 left-0 z-10`}
+    >
       <nav className="h-full flex flex-col border-r shadow-sm">
         <div
           onClick={() => setExpanded((prev) => !prev)}
