@@ -8,9 +8,12 @@ interface ISideBarItemProps {
   onClick?: () => void;
 }
 
-function SideBarItem({ expanded, icon, text }: ISideBarItemProps) {
+function SideBarItem({ expanded, icon, text, onClick }: ISideBarItemProps) {
   return (
-    <li className="relative group flex gap-x-4 items-center font-medium hover:bg-gray-300 p-4 rounded-md h-12 transition-colors duration-100">
+    <li
+      onClick={onClick}
+      className="cursor-pointer relative group flex gap-x-4 items-center font-medium hover:bg-gray-300 p-4 rounded-md h-12 transition-colors duration-100"
+    >
       <FontAwesomeIcon
         icon={icon}
         size="lg"

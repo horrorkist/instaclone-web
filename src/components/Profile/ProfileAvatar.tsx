@@ -8,12 +8,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import CircularLoadingIndicator from "../CircularLoadingIndicator";
-
-const UPLOAD_URL_QUERY = gql`
-  query uploadUrl {
-    getUploadUrl
-  }
-`;
+import { UPLOAD_URL_QUERY } from "../../libs/queries";
 
 const EDIT_AVATAR_MUTATION = gql`
   mutation editAvatar($avatar: String) {
@@ -24,7 +19,7 @@ const EDIT_AVATAR_MUTATION = gql`
   }
 `;
 
-function ProfileAvatar({ id }: { id?: string }) {
+function ProfileAvatar({ id }: { id?: string | null }) {
   const { client } = useQuery<UploadUrlQuery>(UPLOAD_URL_QUERY, {
     skip: true,
     fetchPolicy: "no-cache",
@@ -63,7 +58,7 @@ function ProfileAvatar({ id }: { id?: string }) {
     <div className="">
       <label
         htmlFor="avatar"
-        className="relative flex justify-center items-center w-40 h-40 rounded-full border-4 border-gray-300 overflow-hidden"
+        className="cursor-pointer relative flex justify-center items-center w-40 h-40 rounded-full border-4 border-gray-300 overflow-hidden"
       >
         <input
           onChange={handleAvatarChange}

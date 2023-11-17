@@ -4,6 +4,7 @@ import SignUp from "../screens/SignUp";
 import routes from "./routes";
 import Root from "../Root";
 import Profile from "../screens/Profile";
+import Posts from "../screens/Posts";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: routes.profilePosts,
-            element: <h1>Posts</h1>,
+            element: <Posts />,
             errorElement: <h1>Not Found</h1>,
           },
           {

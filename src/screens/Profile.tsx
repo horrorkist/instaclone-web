@@ -44,6 +44,7 @@ function Profile() {
     variables: {
       username,
     },
+    fetchPolicy: "no-cache",
   });
 
   if (loading) {
@@ -53,7 +54,7 @@ function Profile() {
   return (
     <main className="w-1/2 max-w-5xl ml-80 flex flex-col">
       <div className="flex gap-x-20 px-20 py-10 items-center">
-        <ProfileAvatar />
+        <ProfileAvatar id={data?.getUserByUserName.user?.avatar} />
         <div className="flex flex-col gap-y-4 flex-1">
           <div className="flex gap-x-6 items-center">
             <div className="h-10">
@@ -61,10 +62,21 @@ function Profile() {
                 {data?.getUserByUserName.user?.username}
               </h1>
             </div>
-            <div className="h-10 flex items-center font-semibold">
-              <button className="px-2 py-1 rounded-md bg-gray-200 hover:bg-gray-400">
-                Edit Profile
-              </button>
+            <div className="h-10 flex items-center gap-x-4 font-semibold">
+              {data?.getUserByUserName.user?.isMe ? (
+                <button className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-400">
+                  Edit Profile
+                </button>
+              ) : (
+                <>
+                  <button className="px-3 py-1 text-white rounded-md bg-blue-400 hover:bg-blue-500">
+                    Follow
+                  </button>
+                  <button className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-400">
+                    Message
+                  </button>
+                </>
+              )}
             </div>
           </div>
           <div className="flex gap-x-10">
