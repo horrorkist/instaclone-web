@@ -5,7 +5,7 @@ import NameCard from "../components/NameCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faComment, faFaceSmile } from "@fortawesome/free-regular-svg-icons";
 import { faPlus, faEllipsis } from "@fortawesome/free-solid-svg-icons";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   COMMENTS_QUERY,
@@ -48,8 +48,9 @@ function PostDetail({
 
   // comment
 
-  const [comments, setComments] = useState<any[]>([]);
-  const [commentLoading, setCommentLoading] = useState<boolean>(false);
+  // const [comments, setComments] = useState<any[]>([]);
+  const [loadMoreCommentsLoading, setLoadMoreCommentsLoading] =
+    useState<boolean>(false);
   const [reachedCommentEnd, setReachedCommentEnd] = useState<boolean>(false);
 
   const {
@@ -59,8 +60,10 @@ function PostDetail({
     reset,
   } = useForm<ICommentForm>();
 
-  const contentRef = useRef<HTMLDivElement>(null);
-  const commentBoxRef = useRef<HTMLDivElement>(null);
+  const [contentRef, setContentRef] = useState<HTMLDivElement | null>(null);
+  const [commentBoxRef, setCommentBoxRef] = useState<HTMLDivElement | null>(
+    null
+  );
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     e.target.style.height = "auto";
@@ -74,11 +77,10 @@ function PostDetail({
     target.style.paddingBottom = $parent!.scrollHeight! + 20 + "px";
   };
 
-  const {
-    loading: commentsLoading,
-    data: commentsData,
-    fetchMore,
-  } = useQuery<CommentsQuery, CommentsQueryVariables>(COMMENTS_QUERY, {
+  const { data: commentsData, fetchMore } = useQuery<
+    CommentsQuery,
+    CommentsQueryVariables
+  >(COMMENTS_QUERY, {
     variables: {
       photoId: postId,
       skip: 0,
@@ -86,29 +88,17 @@ function PostDetail({
   });
 
   useEffect(() => {
-    if (contentRef.current && commentBoxRef.current) {
-      contentRef.current.style.paddingBottom =
-        commentBoxRef.current.scrollHeight + 20 + "px";
+    if (contentRef && commentBoxRef) {
+      contentRef.style.paddingBottom = commentBoxRef.scrollHeight + 20 + "px";
     }
-  }, []);
-
-  useEffect(() => {
-    if (
-      !commentsLoading &&
-      commentsData &&
-      commentsData.getPhotoComments &&
-      commentsData.getPhotoComments.comments
-    ) {
-      setComments(commentsData.getPhotoComments.comments);
-    }
-  }, [commentsLoading, commentsData]);
+  }, [contentRef, commentBoxRef]);
 
   const onLoadMoreComment = async () => {
-    if (commentLoading) return;
-    setCommentLoading(true);
+    if (loadMoreCommentsLoading) return;
+    setLoadMoreCommentsLoading(true);
     await fetchMore({
       variables: {
-        skip: comments.length,
+        skip: commentsData?.getPhotoComments.comments?.length || 0,
       },
       updateQuery: (prev, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
@@ -119,10 +109,6 @@ function PostDetail({
           setReachedCommentEnd(true);
           return prev;
         }
-        setComments([
-          ...prev.getPhotoComments.comments!,
-          ...fetchMoreResult.getPhotoComments.comments!,
-        ]);
         return {
           getPhotoComments: {
             ...prev.getPhotoComments,
@@ -134,7 +120,7 @@ function PostDetail({
         };
       },
     });
-    setCommentLoading(false);
+    setLoadMoreCommentsLoading(false);
   };
 
   const [submitCommentLoading, setSubmitCommentLoading] =
@@ -261,8 +247,8 @@ function PostDetail({
             </div>
           </div>
           <div
-            ref={contentRef}
-            className="border-t flex-1 box-content overflow-scroll flex flex-col items-center p-4 gap-y-5"
+            ref={setContentRef}
+            className="border-t flex-1 overflow-scroll flex flex-col items-center p-4 gap-y-5"
           >
             <Comment
               id={postData?.getPhoto.photo?.id}
@@ -290,7 +276,7 @@ function PostDetail({
               }
             })}
             {!reachedCommentEnd &&
-              (commentLoading ? (
+              (loadMoreCommentsLoading ? (
                 <div>
                   <CircularLoadingIndicator />
                 </div>
@@ -304,7 +290,7 @@ function PostDetail({
               ))}
           </div>
           <div
-            ref={commentBoxRef}
+            ref={setCommentBoxRef}
             className="absolute bottom-0 w-full bg-white"
           >
             <div className="p-4 flex flex-col gap-y-4 border-y">
