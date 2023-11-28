@@ -27,6 +27,7 @@ import { uploadImage } from "../../libs/api";
 import NameCard from "../NameCard";
 import useUser from "../../hooks/useUser";
 import CircularLoadingIndicator from "../CircularLoadingIndicator";
+import constants from "../../libs/constants";
 
 interface IUploadPhotoForm {
   file: FileList;
@@ -38,6 +39,9 @@ function CreatePostModal({ exit }: { exit: () => void }) {
     register,
     handleSubmit,
     formState: { isValid },
+    watch,
+    getValues,
+    setValue,
   } = useForm<IUploadPhotoForm>();
   const [accessibilityExpanded, setAccessibilityExpanded] =
     useState<boolean>(false);
@@ -80,7 +84,6 @@ function CreatePostModal({ exit }: { exit: () => void }) {
       result: { id },
     } = await uploadImage(file, url);
 
-    console.log(userInfoVar());
     const { data: uploadPostResponse } = await client.mutate<
       UploadPhotoMutation,
       UploadPhotoMutationVariables
@@ -236,7 +239,18 @@ function CreatePostModal({ exit }: { exit: () => void }) {
               />
             </div>
             <textarea
-              {...register("caption", { maxLength: 2200 })}
+              {...register("caption", {
+                maxLength: constants.MAX_CAPTION_LIMIT,
+                onChange: () => {
+                  const caption = getValues("caption");
+                  if (caption && caption.length > constants.MAX_CAPTION_LIMIT) {
+                    setValue(
+                      "caption",
+                      caption.slice(0, constants.MAX_CAPTION_LIMIT)
+                    );
+                  }
+                },
+              })}
               className="px-4 resize-none outline-none"
               cols={30}
               rows={10}
@@ -244,7 +258,10 @@ function CreatePostModal({ exit }: { exit: () => void }) {
             ></textarea>
             <div className="flex justify-between items-center p-4 border-b text-gray-400">
               <FontAwesomeIcon icon={faFaceSmile} size="lg" />
-              <span className="text-sm">0/2,200</span>
+              <span className="text-sm">
+                {watch("caption")?.length}/
+                {constants.MAX_CAPTION_LIMIT.toLocaleString()}
+              </span>
             </div>
             <div className="p-3 flex justify-between items-center text-gray-500 border-b">
               <span className="">Add Location Not Supported</span>

@@ -14,6 +14,7 @@ import {
 import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import CircularLoadingIndicator from "../CircularLoadingIndicator";
+import constants from "../../libs/constants";
 
 interface IPostControlModalProps {
   postId: number;
@@ -67,11 +68,12 @@ function PostControlModal({
     exitPostDetail();
   };
 
-  const { handleSubmit, register } = useForm<IEditPostForm>({
-    defaultValues: {
-      caption,
-    },
-  });
+  const { handleSubmit, register, watch, setValue, getValues } =
+    useForm<IEditPostForm>({
+      defaultValues: {
+        caption,
+      },
+    });
 
   const onEditSubmit = async ({ caption }: IEditPostForm) => {
     if (loading) return;
@@ -140,11 +142,27 @@ function PostControlModal({
         <div className="p-4 flex justify-center items-center w-full font-medium">
           Caption Edit
         </div>
-        <textarea
-          {...register("caption")}
-          className="p-4 resize-none outline-none h-64"
-          placeholder="Please write caption..."
-        ></textarea>
+        <div className="flex flex-col">
+          <textarea
+            {...register("caption", {
+              maxLength: constants.MAX_CAPTION_LIMIT,
+              onChange: () => {
+                const caption = getValues("caption");
+                if (caption && caption.length > constants.MAX_CAPTION_LIMIT) {
+                  setValue(
+                    "caption",
+                    caption.slice(0, constants.MAX_CAPTION_LIMIT)
+                  );
+                }
+              },
+            })}
+            className="p-4 resize-none outline-none h-64"
+            placeholder="Please write caption..."
+          ></textarea>
+          <div className="text-right p-2 text-gray-400 font-medium">{`${
+            watch("caption").length
+          }/${constants.MAX_CAPTION_LIMIT}`}</div>
+        </div>
         <div className="flex divide-x-2">
           <button className="p-4 flex justify-center items-center w-full text-blue-500">
             {loading ? <CircularLoadingIndicator /> : "Edit"}
