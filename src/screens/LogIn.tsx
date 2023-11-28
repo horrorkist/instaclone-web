@@ -27,6 +27,8 @@ const LOGIN = gql(`
     ok
     error
     token
+    username
+    avatar
   }
 }
 `);
@@ -57,7 +59,8 @@ function LogIn() {
     }
 
     if (ok) {
-      logUserIn(token!);
+      console.log(data.login.username, data.login.avatar);
+      logUserIn(token!, data.login!.username!, data.login!.avatar!);
       navigate(routes.home, {
         replace: true,
       });

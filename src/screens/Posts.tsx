@@ -1,34 +1,18 @@
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { useParams } from "react-router-dom";
 import { PhotosQuery, PhotosQueryVariables } from "../__generated__/graphql";
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faHeart } from "@fortawesome/free-solid-svg-icons";
 import ModalOverlay from "../components/ModalOverlay";
 import CreatePostModal from "../components/Modals/createPostModal";
-
-const FEED_QUERY = gql`
-  query photos($username: String!, $page: Int!) {
-    getPhotos(username: $username, page: $page) {
-      ok
-      error
-      photos {
-        id
-        author {
-          id
-        }
-        url
-        caption
-        likesCount
-        commentsCount
-        isLiked
-        isMine
-        createdAt
-        updatedAt
-      }
-    }
-  }
-`;
+import { getPhotoUrl } from "../libs/utils";
+import { faComment } from "@fortawesome/free-regular-svg-icons";
+import PostDetail from "./PostDetail";
+import CircularLoadingIndicator from "../components/CircularLoadingIndicator";
+import useIntersectionObserver from "../hooks/useIntersectionObserver";
+import { Helmet } from "react-helmet-async";
+import { FEED_QUERY } from "../libs/queries";
 
 function Posts() {
   const { username } = useParams();
@@ -37,47 +21,92 @@ function Posts() {
     throw new Error("Username is undefined");
   }
 
-  const [page, setPage] = useState<number>(1);
   const [photos, setPhotos] = useState<any[]>([]);
+  const [postId, setPostId] = useState<number>();
 
-  const { loading, data } = useQuery<PhotosQuery, PhotosQueryVariables>(
-    FEED_QUERY,
-    {
-      variables: {
-        username,
-        page,
-      },
-      onCompleted: (data) => {
-        if (data.getPhotos.ok && data.getPhotos.photos) {
-          setPhotos((prev) => [...prev, ...[data.getPhotos.photos]]);
-        }
-      },
-    }
-  );
+  const { isVisible, setTarget } = useIntersectionObserver();
+  const [reachedEnd, setReachedEnd] = useState<boolean>(false);
 
-  const [inModal, setInModal] = useState<boolean>(false);
-
-  const closeModal = () => setInModal(false);
-
-  const onClick = () => setInModal((prev) => !prev);
+  const { loading, data, fetchMore } = useQuery<
+    PhotosQuery,
+    PhotosQueryVariables
+  >(FEED_QUERY, {
+    variables: {
+      username,
+      page: 1,
+    },
+    onCompleted: (data) => {
+      if (data.getPhotos.ok && data.getPhotos.photos) {
+        setPhotos((prev) => [...prev, ...data.getPhotos.photos!.flat()]);
+      }
+    },
+  });
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    async function fetchMorePhotos() {
+      await fetchMore({
+        variables: {
+          page: Math.ceil(photos.length / 15) + 1,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          if (!fetchMoreResult.getPhotos.ok) {
+            return prev;
+          }
+          if (fetchMoreResult.getPhotos.photos?.length === 0) {
+            setReachedEnd(true);
+            return prev;
+          }
+          setPhotos([
+            ...prev.getPhotos.photos!,
+            ...fetchMoreResult.getPhotos.photos!,
+          ]);
+          return {
+            getPhotos: {
+              ...prev.getPhotos,
+              photos: [
+                ...prev.getPhotos.photos!,
+                ...fetchMoreResult.getPhotos.photos!,
+              ],
+            },
+          };
+        },
+      });
+    }
 
-  if (loading) return <h1>Loading...</h1>;
+    if (isVisible && !loading && !reachedEnd) {
+      fetchMorePhotos();
+    }
+  }, [isVisible, loading, reachedEnd]);
 
-  if (photos.length !== 0)
+  const [inModal, setInModal] = useState<"" | "create" | "post">("");
+
+  const closeModal = () => setInModal("");
+
+  const onCreateClick = () => setInModal("create");
+  const onPostClick = (post) => {
+    setPostId(post.id);
+    setInModal("post");
+  };
+
+  if (loading)
+    return (
+      <div className="flex h-full justify-center items-center">
+        <CircularLoadingIndicator size="lg" />
+      </div>
+    );
+
+  if (photos.length == 0)
     return (
       <>
-        {inModal && (
+        {inModal === "create" && (
           <ModalOverlay exit={closeModal}>
             <CreatePostModal exit={closeModal} />
           </ModalOverlay>
         )}
         <div className="flex flex-col gap-y-4 items-center mt-20">
           <div
-            onClick={onClick}
+            onClick={onCreateClick}
             className="cursor-pointer w-16 h-16 rounded-full flex justify-center items-center border border-black "
           >
             <FontAwesomeIcon icon={faCamera} size="xl" />
@@ -88,7 +117,7 @@ function Posts() {
               when you share your photos, they will appear on your profile.
             </p>
             <strong
-              onClick={onClick}
+              onClick={onCreateClick}
               className="text-blue-500 hover:text-black cursor-pointer"
             >
               Share your first photo
@@ -98,7 +127,60 @@ function Posts() {
       </>
     );
 
-  return <div>asdf</div>;
+  return (
+    <>
+      <Helmet>
+        <title>{`@${username}`} &middot; InstaClone</title>
+      </Helmet>
+      {inModal === "post" && (
+        <ModalOverlay exit={closeModal}>
+          <PostDetail postId={postId!} exitPostDetail={closeModal} />
+        </ModalOverlay>
+      )}
+      <div className="flex flex-col">
+        <div className="grid grid-cols-3 gap-1 pb-10">
+          {data?.getPhotos?.photos?.map((photo) => {
+            return (
+              <div
+                onClick={() => onPostClick(photo)}
+                key={photo?.id}
+                className="aspect-square flex relative group cursor-pointer"
+              >
+                <img
+                  src={getPhotoUrl({
+                    id: photo!.url,
+                  })}
+                  className="object-cover"
+                />
+                <div className="absolute inset-0 w-full h-full invisible group-hover:visible bg-black bg-opacity-30 flex items-center justify-center gap-x-4">
+                  <div className="text-white flex gap-x-2 items-center">
+                    <FontAwesomeIcon icon={faHeart} size="lg" />
+                    <span className="text-2xl font-bold">
+                      {photo?.likesCount}
+                    </span>
+                  </div>
+                  <div className="text-white flex gap-x-2 items-center">
+                    <FontAwesomeIcon icon={faComment} size="lg" />
+                    <span className="text-2xl font-bold">
+                      {photo?.commentsCount}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        {!reachedEnd && (
+          <div
+            ref={setTarget}
+            className="flex justify-center py-4 items-center"
+          >
+            <CircularLoadingIndicator size="lg" />
+          </div>
+        )}
+      </div>
+    </>
+  );
 }
 
 export default Posts;

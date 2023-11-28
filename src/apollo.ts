@@ -13,9 +13,24 @@ export const isLoggedInVar = makeVar<boolean>(
   Boolean(localStorage.getItem(TOKEN))
 );
 
-export const logUserIn = (token: string) => {
+type UserInfo = {
+  username: string;
+  avatar?: string;
+};
+
+export const userInfoVar = makeVar<UserInfo>({
+  username: "",
+  avatar: "",
+});
+
+export const logUserIn = (
+  token: string,
+  username: string,
+  avatar: string | undefined
+) => {
   localStorage.setItem(TOKEN, token);
   isLoggedInVar(true);
+  userInfoVar({ username, avatar });
 };
 
 export const logUserOut = () => {

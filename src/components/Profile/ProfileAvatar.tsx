@@ -1,4 +1,4 @@
-import { gql, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import { uploadImage } from "../../libs/api";
 import {
   EditAvatarMutation,
@@ -9,6 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import CircularLoadingIndicator from "../CircularLoadingIndicator";
 import { UPLOAD_URL_QUERY } from "../../libs/queries";
+import { getPhotoUrl } from "../../libs/utils";
+import client from "../../apollo";
 
 const EDIT_AVATAR_MUTATION = gql`
   mutation editAvatar($avatar: String) {
@@ -19,11 +21,7 @@ const EDIT_AVATAR_MUTATION = gql`
   }
 `;
 
-function ProfileAvatar({ id }: { id?: string | null }) {
-  const { client } = useQuery<UploadUrlQuery>(UPLOAD_URL_QUERY, {
-    skip: true,
-    fetchPolicy: "no-cache",
-  });
+function ProfileAvatar({ id, isMe }: { id?: string | null; isMe: boolean }) {
   const [avatar, setAvatar] = useState<string>(id || "");
   const [loading, setLoading] = useState<boolean>(false);
   const [editAvatar] = useMutation<EditAvatarMutation>(EDIT_AVATAR_MUTATION);
@@ -33,7 +31,7 @@ function ProfileAvatar({ id }: { id?: string | null }) {
       const file = e.target.files?.[0];
 
       if (file) {
-        const { data } = await client.query({
+        const { data } = await client.query<UploadUrlQuery>({
           query: UPLOAD_URL_QUERY,
           fetchPolicy: "no-cache",
         });
@@ -58,15 +56,19 @@ function ProfileAvatar({ id }: { id?: string | null }) {
     <div className="">
       <label
         htmlFor="avatar"
-        className="cursor-pointer relative flex justify-center items-center w-40 h-40 rounded-full border-4 border-gray-300 overflow-hidden"
+        className={`${
+          isMe && "cursor-pointer"
+        } relative flex justify-center items-center w-40 h-40 rounded-full border-4 border-gray-300 overflow-hidden`}
       >
-        <input
-          onChange={handleAvatarChange}
-          id="avatar"
-          type="file"
-          className="invisible absolute w-full h-full"
-          accept="image/*"
-        />
+        {isMe && (
+          <input
+            onChange={handleAvatarChange}
+            id="avatar"
+            type="file"
+            className="invisible absolute w-full h-full"
+            accept="image/*"
+          />
+        )}
         {loading && (
           <div className="absolute w-full h-full flex justify-center items-center bg-black bg-opacity-30">
             <CircularLoadingIndicator size="lg" />
@@ -74,7 +76,7 @@ function ProfileAvatar({ id }: { id?: string | null }) {
         )}
         {avatar ? (
           <img
-            src={`https://imagedelivery.net/a9xaKxLjpK4A_4a8CoEUJg/${avatar}/public`}
+            src={getPhotoUrl({ id: avatar })}
             alt=""
             className="object-cover"
           />

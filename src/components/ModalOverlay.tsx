@@ -9,7 +9,12 @@ function ModalOverlay({
 }) {
   return (
     <div
-      onClick={exit}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (exit) {
+          exit();
+        }
+      }}
       className="fixed inset-0 w-screen h-screen bg-black bg-opacity-30 z-20 flex justify-center items-center"
     >
       {children}

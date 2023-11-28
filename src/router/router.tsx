@@ -5,6 +5,7 @@ import routes from "./routes";
 import Root from "../Root";
 import Profile from "../screens/Profile";
 import Posts from "../screens/Posts";
+import Home from "../screens/Home";
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: routes.home,
-        element: <h1>Home</h1>,
+        element: <Home />,
         errorElement: <h1>Not Found</h1>,
       },
       {

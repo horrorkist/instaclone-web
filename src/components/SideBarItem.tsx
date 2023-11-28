@@ -6,13 +6,20 @@ interface ISideBarItemProps {
   icon: IconDefinition;
   text: string;
   onClick?: () => void;
+  className?: string;
 }
 
-function SideBarItem({ expanded, icon, text, onClick }: ISideBarItemProps) {
+function SideBarItem({
+  expanded,
+  icon,
+  text,
+  onClick,
+  className,
+}: ISideBarItemProps) {
   return (
     <li
       onClick={onClick}
-      className="cursor-pointer relative group flex gap-x-4 items-center font-medium hover:bg-gray-300 p-4 rounded-md h-12 transition-colors duration-100"
+      className={`${className} cursor-pointer relative group flex gap-x-4 items-center font-medium hover:bg-gray-300 p-4 rounded-md h-12 transition-colors duration-100`}
     >
       <FontAwesomeIcon
         icon={icon}
@@ -27,7 +34,7 @@ function SideBarItem({ expanded, icon, text, onClick }: ISideBarItemProps) {
         {text}
       </span>
       {!expanded && (
-        <span className="absolute invisible scale-0 group-hover:scale-100 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-500 duration-300 left-full ml-4 px-4 py-2 rounded-md shadow-md border">
+        <span className="absolute invisible scale-0 group-hover:scale-100 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-500 duration-300 left-full ml-4 px-4 py-2 rounded-md shadow-md border bg-white">
           {text}
         </span>
       )}

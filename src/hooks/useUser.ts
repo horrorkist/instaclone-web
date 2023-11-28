@@ -1,5 +1,5 @@
 import { gql, useQuery, useReactiveVar } from "@apollo/client";
-import { isLoggedInVar, logUserOut } from "./../apollo";
+import { isLoggedInVar, logUserOut, userInfoVar } from "./../apollo";
 import { MeQuery } from "../__generated__/graphql";
 import { useNavigate } from "react-router-dom";
 import routes from "../router/routes";
@@ -34,6 +34,13 @@ function useUser() {
         logUserOut();
         navigate(routes.login, {
           replace: true,
+        });
+      }
+
+      if (data?.me.ok) {
+        userInfoVar({
+          username: data.me.me?.username || "",
+          avatar: data.me.me?.avatar || "",
         });
       }
     }
