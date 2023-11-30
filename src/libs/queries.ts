@@ -269,7 +269,145 @@ export const SEARCH_USERS_QUERY = gql`
         isFollowing
         isMe
         totalFollowers
+        firstName
+        lastName
       }
+    }
+  }
+`;
+
+export const EDIT_AVATAR_MUTATION = gql`
+  mutation editAvatar($avatar: String) {
+    editProfile(avatar: $avatar) {
+      ok
+      error
+    }
+  }
+`;
+
+export const ME_QUERY = gql`
+  query me {
+    me {
+      ok
+      me {
+        username
+        email
+        firstName
+        lastName
+        avatar
+        bio
+      }
+    }
+  }
+`;
+
+export const EDIT_PROFILE_MUTATION = gql`
+  mutation editProfile($firstName: String, $lastName: String, $bio: String) {
+    editProfile(firstName: $firstName, lastName: $lastName, bio: $bio) {
+      ok
+      error
+    }
+  }
+`;
+
+export const DIRECT_ROOMS_QUERY = gql`
+  query directRooms {
+    getRooms {
+      ok
+      error
+      rooms {
+        id
+        users {
+          id
+          username
+          avatar
+          isMe
+        }
+        lastMessage {
+          id
+          payload
+          createdAt
+        }
+        unreadMessagesCount
+      }
+    }
+  }
+`;
+
+export const DIRECT_ROOM_QUERY = gql`
+  query directRoom($id: Int!) {
+    getRoom(id: $id) {
+      ok
+      error
+      room {
+        id
+        users {
+          id
+          username
+          avatar
+          isMe
+        }
+        messages {
+          id
+          payload
+          createdAt
+          author {
+            id
+            username
+            avatar
+            isMe
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ROOM_UPDATE_SUBSCRIPTION = gql`
+  subscription OnMessageCreated($roomId: Int!) {
+    roomUpdates(roomId: $roomId) {
+      id
+      payload
+      author {
+        id
+        username
+        avatar
+        isMe
+      }
+      room {
+        id
+      }
+      createdAt
+    }
+  }
+`;
+
+export const NEW_ROOM_SUBSCRIPTION = gql`
+  subscription OnRoomCreated {
+    onRoomCreated {
+      id
+      users {
+        id
+        username
+        avatar
+        isMe
+      }
+      lastMessage {
+        id
+        payload
+        createdAt
+      }
+      unreadMessagesCount
+    }
+  }
+`;
+
+export const SEND_MESSAGE_MUTATION = gql`
+  mutation sendMessage($roomId: Int, $payload: String!, $receiverId: Int) {
+    sendMessage(roomId: $roomId, payload: $payload, receiverId: $receiverId) {
+      ok
+      error
+      roomId
     }
   }
 `;

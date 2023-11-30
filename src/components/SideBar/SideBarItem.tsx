@@ -21,11 +21,13 @@ function SideBarItem({
       onClick={onClick}
       className={`${className} cursor-pointer relative group flex gap-x-4 items-center font-medium hover:bg-gray-300 p-4 rounded-md h-12 transition-colors duration-100`}
     >
-      <FontAwesomeIcon
-        icon={icon}
-        size="lg"
-        className="group-hover:scale-110 duration-300 group-active:scale-75"
-      />
+      <div className="w-5 flex justify-center items-center">
+        <FontAwesomeIcon
+          icon={icon}
+          size="lg"
+          className="group-hover:scale-110 duration-300 group-active:scale-75"
+        />
+      </div>
       <span
         className={`${
           expanded ? "opacity-100" : "invisible opacity-0"

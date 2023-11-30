@@ -1,10 +1,10 @@
 import useUser from "./hooks/useUser";
 import Splash from "./screens/Splash";
-import SideBar from "./components/SideBar";
+import SideBar from "./components/SideBar/SideBar";
 import { Outlet } from "react-router-dom";
 
 function Root() {
-  const { data, loading } = useUser();
+  const { loading } = useUser();
 
   if (loading) {
     return <Splash />;

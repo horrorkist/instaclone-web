@@ -31,6 +31,7 @@ function Search() {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
     setLoading(true);
+    setReachEnd(false);
   };
 
   const [reachEnd, setReachEnd] = useState<boolean>(false);
@@ -85,7 +86,7 @@ function Search() {
   }, [keyword]);
 
   return (
-    <div className="fixed w-[500px] h-screen bg-white border-r z-20 left-[80px] animate-slide-in-left-to-right  rounded-br-2xl rounded-tr-2xl shadow-xl flex flex-col">
+    <div className="search fixed w-[500px] h-screen bg-white border-r z-20 left-[80px] animate-slide-in-left-to-right  rounded-br-2xl rounded-tr-2xl shadow-xl flex flex-col">
       <header className="p-5">
         <h1 className="text-3xl font-bold">Search</h1>
       </header>
@@ -148,6 +149,9 @@ function Search() {
                       username={user?.username || ""}
                       avatar={user?.avatar || undefined}
                     />
+                    {/* <span className="text-xs text-gray-400">
+                      {user?.firstName}&nbsp;{user?.lastName}
+                    </span> */}
                   </Link>
                 ))}
                 {!reachEnd && (
@@ -156,8 +160,11 @@ function Search() {
                       <CircularLoadingIndicator size="md" />
                     ) : (
                       <button
-                        onClick={onLoadMore}
-                        className="p-1 border-2 border-black rounded-full flex justify-center items-center"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onLoadMore();
+                        }}
+                        className="lodeMore p-1 border-2 border-black rounded-full flex justify-center items-center"
                       >
                         <FontAwesomeIcon icon={faPlus} className="text-black" />
                       </button>

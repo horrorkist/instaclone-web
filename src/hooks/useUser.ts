@@ -1,29 +1,15 @@
-import { gql, useQuery, useReactiveVar } from "@apollo/client";
+import { useQuery, useReactiveVar } from "@apollo/client";
 import { isLoggedInVar, logUserOut, userInfoVar } from "./../apollo";
 import { MeQuery } from "../__generated__/graphql";
 import { useNavigate } from "react-router-dom";
 import routes from "../router/routes";
 import { useEffect } from "react";
-
-const ME_QUERY = gql`
-  query me {
-    me {
-      ok
-      me {
-        username
-        email
-        firstName
-        lastName
-        avatar
-      }
-    }
-  }
-`;
+import { ME_QUERY } from "../libs/queries";
 
 function useUser() {
   const navigate = useNavigate();
   const hasToken = useReactiveVar(isLoggedInVar);
-  const { data, loading } = useQuery<MeQuery>(ME_QUERY, {
+  const { data, loading, refetch } = useQuery<MeQuery>(ME_QUERY, {
     skip: !hasToken,
     fetchPolicy: "no-cache",
   });
@@ -46,7 +32,7 @@ function useUser() {
     }
   }, [data, navigate, loading]);
 
-  return { data, loading };
+  return { data, loading, refetch };
 }
 
 export default useUser;

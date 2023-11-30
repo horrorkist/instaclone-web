@@ -1,4 +1,4 @@
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { uploadImage } from "../../libs/api";
 import {
   EditAvatarMutation,
@@ -8,18 +8,9 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import CircularLoadingIndicator from "../CircularLoadingIndicator";
-import { UPLOAD_URL_QUERY } from "../../libs/queries";
+import { EDIT_AVATAR_MUTATION, UPLOAD_URL_QUERY } from "../../libs/queries";
 import { getPhotoUrl } from "../../libs/utils";
 import client from "../../apollo";
-
-const EDIT_AVATAR_MUTATION = gql`
-  mutation editAvatar($avatar: String) {
-    editProfile(avatar: $avatar) {
-      ok
-      error
-    }
-  }
-`;
 
 function ProfileAvatar({ id, isMe }: { id?: string | null; isMe: boolean }) {
   const [avatar, setAvatar] = useState<string>(id || "");

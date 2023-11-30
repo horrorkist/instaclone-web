@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
 import FollowButton from "./FollowButton";
+import routes from "../router/routes";
 
 function FloatProfile({ username }: { username: string }) {
   const { loading, data } = useQuery<UserQuery, UserQueryVariables>(
@@ -97,9 +98,12 @@ function FloatProfile({ username }: { username: string }) {
       )}
       <div className="flex justify-center items-center my-4 px-4">
         {data?.getUserByUserName.user?.isMe ? (
-          <button className="py-2 rounded-md w-full bg-blue-500 text-white">
+          <Link
+            to={`${routes.settings}/${routes.editProfile}`}
+            className="py-2 rounded-md w-full bg-blue-500 text-white text-center"
+          >
             Edit Profile
-          </button>
+          </Link>
         ) : (
           <FollowButton
             username={username}

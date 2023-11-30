@@ -1,24 +1,21 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBars,
-  faDoorOpen,
-  faGear,
   faHome,
-  faMoon,
   faPlus,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
 import { useEffect, useState } from "react";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
 import SideBarItem from "./SideBarItem";
-import { faMessage } from "@fortawesome/free-regular-svg-icons/faMessage";
-import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { faPaperPlane, faUser } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
-import useUser from "../hooks/useUser";
-import ModalOverlay from "./ModalOverlay";
-import CreatePostModal from "./Modals/createPostModal";
-import { logUserOut } from "../apollo";
-import Search from "./Search";
+import useUser from "../../hooks/useUser";
+import ModalOverlay from "../ModalOverlay";
+import CreatePostModal from "../Modals/createPostModal";
+import Search from "../Search";
+import MoreExpanded from "./MoreExpanded";
+import routes from "../../router/routes";
 
 function SideBar() {
   const [expanded, setExpanded] = useState(true);
@@ -30,15 +27,12 @@ function SideBar() {
 
   const closeModal = () => setIsModalOpen(false);
 
-  const onLogoutClick = () => {
-    logUserOut();
-  };
-
   const onToggleSearch = () => {
     setSearchExpanded((prev) => !prev);
     setExpanded((prev) => !prev);
   };
 
+  // shrink more when clicked out of the more expanded
   useEffect(() => {
     const setMoreExpandedFalse = (e) => {
       const more = document.querySelector(".more");
@@ -54,6 +48,25 @@ function SideBar() {
     };
   }, [moreExpanded]);
 
+  // shrink search when clicked out of sidebar
+  useEffect(() => {
+    const setSearchExpandedFalse = (e) => {
+      const sidebar = document.querySelector(".sidebar");
+      const search = document.querySelector(".search");
+      if (sidebar?.contains(e.target)) return;
+      if (search?.contains(e.target)) return;
+      setSearchExpanded(false);
+      setExpanded(true);
+    };
+    if (searchExpanded) {
+      document.addEventListener("click", setSearchExpandedFalse);
+    }
+
+    return () => {
+      document.removeEventListener("click", setSearchExpandedFalse);
+    };
+  }, [searchExpanded]);
+
   return (
     <>
       {isModalOpen && (
@@ -65,7 +78,7 @@ function SideBar() {
       <aside
         className={`${
           expanded ? "w-72" : "w-20"
-        } h-screen duration-500 bg-white fixed top-0 left-0 z-10`}
+        } h-screen sidebar duration-500 bg-white fixed top-0 left-0 z-30`}
       >
         <nav className="h-full flex flex-col border-r shadow-sm">
           <div
@@ -94,7 +107,12 @@ function SideBar() {
               expanded={expanded}
               onClick={onToggleSearch}
             />
-            <SideBarItem icon={faMessage} text="Message" expanded={expanded} />
+            <SideBarItem
+              icon={faPaperPlane}
+              text="Messages"
+              expanded={expanded}
+              onClick={() => navigate(routes.messages)}
+            />
             <SideBarItem
               icon={faPlus}
               text="Create"
@@ -116,37 +134,7 @@ function SideBar() {
               onClick={() => setMoreExpanded((prev) => !prev)}
               className=""
             />
-            {moreExpanded && (
-              <div className="absolute bottom-full w-[250px] bg-white left-4 border shadow-float rounded-lg -translate-y-1 flex p-2 gap-y-2 flex-col-reverse">
-                <div className="">
-                  <button
-                    onClick={onLogoutClick}
-                    className="flex items-center hover:bg-gray-100 rounded-md w-full px-2 py-4 gap-x-2"
-                  >
-                    <div className="flex justify-center items-center min-w-[20px]">
-                      <FontAwesomeIcon icon={faDoorOpen} size="lg" />
-                    </div>
-                    <div className="font-semibold">Log Out</div>
-                  </button>
-                </div>
-                <div className="">
-                  <button className="flex items-center hover:bg-gray-100 rounded-md w-full px-2 py-4 gap-x-2">
-                    <div className="flex justify-center items-center min-w-[20px]">
-                      <FontAwesomeIcon icon={faGear} size="lg" />
-                    </div>
-                    <div className="font-semibold">Settings</div>
-                  </button>
-                </div>
-                <div className="">
-                  <button className="flex items-center hover:bg-gray-100 rounded-md w-full px-2 py-4 gap-x-2">
-                    <div className="flex justify-center items-center min-w-[20px]">
-                      <FontAwesomeIcon icon={faMoon} size="lg" />
-                    </div>
-                    <div className="font-semibold">Switch appearance</div>
-                  </button>
-                </div>
-              </div>
-            )}
+            {moreExpanded && <MoreExpanded />}
           </div>
         </nav>
       </aside>

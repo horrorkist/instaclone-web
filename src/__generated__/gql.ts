@@ -13,8 +13,6 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n": types.EditAvatarDocument,
-    "\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n      }\n    }\n  }\n": types.MeDocument,
     "\n  query uploadUrl {\n    getUploadUrl\n  }\n": types.UploadUrlDocument,
     "\n  mutation uploadPhoto($url: String!, $caption: String) {\n    uploadPhoto(url: $url, caption: $caption) {\n      ok\n      error\n    }\n  }\n": types.UploadPhotoDocument,
     "\n  query comments($photoId: Int!, $skip: Int!) {\n    getPhotoComments(id: $photoId, skip: $skip) {\n      ok\n      error\n      comments {\n        id\n        author {\n          username\n          avatar\n        }\n        photo {\n          id\n        }\n        payload\n        isMine\n        createdAt\n        updatedAt\n      }\n    }\n  }\n": types.CommentsDocument,
@@ -31,7 +29,15 @@ const documents = {
     "\n  query followers($username: String!, $page: Int!) {\n    getFollowers(username: $username, page: $page) {\n      ok\n      error\n      followers {\n        id\n        username\n        avatar\n        isFollowing\n        isMe\n      }\n    }\n  }\n": types.FollowersDocument,
     "\n  query following($username: String!, $lastId: Int) {\n    getFollowing(username: $username, lastId: $lastId) {\n      ok\n      error\n      lastId\n      following {\n        id\n        username\n        avatar\n        isFollowing\n        isMe\n      }\n    }\n  }\n": types.FollowingDocument,
     "\n  query homeFeed($page: Int!) {\n    getFeed(page: $page) {\n      ok\n      error\n      photos {\n        id\n        author {\n          id\n          username\n          avatar\n          isMe\n          isFollowing\n        }\n        url\n        createdAt\n        updatedAt\n        caption\n        likesCount\n        commentsCount\n        isLiked\n      }\n    }\n  }\n": types.HomeFeedDocument,
-    "\n  query searchUsers($keyword: String!, $lastId: Int) {\n    searchUsers(keyword: $keyword, lastId: $lastId) {\n      ok\n      error\n      lastId\n      users {\n        id\n        username\n        avatar\n        isFollowing\n        isMe\n        totalFollowers\n      }\n    }\n  }\n": types.SearchUsersDocument,
+    "\n  query searchUsers($keyword: String!, $lastId: Int) {\n    searchUsers(keyword: $keyword, lastId: $lastId) {\n      ok\n      error\n      lastId\n      users {\n        id\n        username\n        avatar\n        isFollowing\n        isMe\n        totalFollowers\n        firstName\n        lastName\n      }\n    }\n  }\n": types.SearchUsersDocument,
+    "\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n": types.EditAvatarDocument,
+    "\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n        bio\n      }\n    }\n  }\n": types.MeDocument,
+    "\n  mutation editProfile($firstName: String, $lastName: String, $bio: String) {\n    editProfile(firstName: $firstName, lastName: $lastName, bio: $bio) {\n      ok\n      error\n    }\n  }\n": types.EditProfileDocument,
+    "\n  query directRooms {\n    getRooms {\n      ok\n      error\n      rooms {\n        id\n        users {\n          id\n          username\n          avatar\n          isMe\n        }\n        lastMessage {\n          id\n          payload\n          createdAt\n        }\n        unreadMessagesCount\n      }\n    }\n  }\n": types.DirectRoomsDocument,
+    "\n  query directRoom($id: Int!) {\n    getRoom(id: $id) {\n      ok\n      error\n      room {\n        id\n        users {\n          id\n          username\n          avatar\n          isMe\n        }\n        messages {\n          id\n          payload\n          createdAt\n          author {\n            id\n            username\n            avatar\n            isMe\n          }\n        }\n      }\n    }\n  }\n": types.DirectRoomDocument,
+    "\n  subscription OnMessageCreated($roomId: Int!) {\n    roomUpdates(roomId: $roomId) {\n      id\n      payload\n      author {\n        id\n        username\n        avatar\n        isMe\n      }\n      room {\n        id\n      }\n      createdAt\n    }\n  }\n": types.OnMessageCreatedDocument,
+    "\n  subscription OnRoomCreated {\n    onRoomCreated {\n      id\n      users {\n        id\n        username\n        avatar\n        isMe\n      }\n      lastMessage {\n        id\n        payload\n        createdAt\n      }\n      unreadMessagesCount\n    }\n  }\n": types.OnRoomCreatedDocument,
+    "\n  mutation sendMessage($roomId: Int, $payload: String!, $receiverId: Int) {\n    sendMessage(roomId: $roomId, payload: $payload, receiverId: $receiverId) {\n      ok\n      error\n      roomId\n    }\n  }\n": types.SendMessageDocument,
     "\n  mutation login ($username: String!, $password: String!) {\n  login(username: $username, password: $password) {\n    ok\n    error\n    token\n    username\n    avatar\n  }\n}\n": types.LoginDocument,
     "\n  mutation createAccount(\n    $firstName: String!\n    $lastName: String\n    $username: String!\n    $email: String!\n    $password: String!\n  ) {\n    createAccount(\n      firstName: $firstName\n      lastName: $lastName\n      username: $username\n      email: $email\n      password: $password\n    ) {\n      ok\n      error\n    }\n  }\n": types.CreateAccountDocument,
 };
@@ -50,14 +56,6 @@ const documents = {
  */
 export function graphql(source: string): unknown;
 
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n"];
-/**
- * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
- */
-export function graphql(source: "\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n      }\n    }\n  }\n"): (typeof documents)["\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -125,7 +123,39 @@ export function graphql(source: "\n  query homeFeed($page: Int!) {\n    getFeed(
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query searchUsers($keyword: String!, $lastId: Int) {\n    searchUsers(keyword: $keyword, lastId: $lastId) {\n      ok\n      error\n      lastId\n      users {\n        id\n        username\n        avatar\n        isFollowing\n        isMe\n        totalFollowers\n      }\n    }\n  }\n"): (typeof documents)["\n  query searchUsers($keyword: String!, $lastId: Int) {\n    searchUsers(keyword: $keyword, lastId: $lastId) {\n      ok\n      error\n      lastId\n      users {\n        id\n        username\n        avatar\n        isFollowing\n        isMe\n        totalFollowers\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query searchUsers($keyword: String!, $lastId: Int) {\n    searchUsers(keyword: $keyword, lastId: $lastId) {\n      ok\n      error\n      lastId\n      users {\n        id\n        username\n        avatar\n        isFollowing\n        isMe\n        totalFollowers\n        firstName\n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  query searchUsers($keyword: String!, $lastId: Int) {\n    searchUsers(keyword: $keyword, lastId: $lastId) {\n      ok\n      error\n      lastId\n      users {\n        id\n        username\n        avatar\n        isFollowing\n        isMe\n        totalFollowers\n        firstName\n        lastName\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation editAvatar($avatar: String) {\n    editProfile(avatar: $avatar) {\n      ok\n      error\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n        bio\n      }\n    }\n  }\n"): (typeof documents)["\n  query me {\n    me {\n      ok\n      me {\n        username\n        email\n        firstName\n        lastName\n        avatar\n        bio\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation editProfile($firstName: String, $lastName: String, $bio: String) {\n    editProfile(firstName: $firstName, lastName: $lastName, bio: $bio) {\n      ok\n      error\n    }\n  }\n"): (typeof documents)["\n  mutation editProfile($firstName: String, $lastName: String, $bio: String) {\n    editProfile(firstName: $firstName, lastName: $lastName, bio: $bio) {\n      ok\n      error\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query directRooms {\n    getRooms {\n      ok\n      error\n      rooms {\n        id\n        users {\n          id\n          username\n          avatar\n          isMe\n        }\n        lastMessage {\n          id\n          payload\n          createdAt\n        }\n        unreadMessagesCount\n      }\n    }\n  }\n"): (typeof documents)["\n  query directRooms {\n    getRooms {\n      ok\n      error\n      rooms {\n        id\n        users {\n          id\n          username\n          avatar\n          isMe\n        }\n        lastMessage {\n          id\n          payload\n          createdAt\n        }\n        unreadMessagesCount\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query directRoom($id: Int!) {\n    getRoom(id: $id) {\n      ok\n      error\n      room {\n        id\n        users {\n          id\n          username\n          avatar\n          isMe\n        }\n        messages {\n          id\n          payload\n          createdAt\n          author {\n            id\n            username\n            avatar\n            isMe\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query directRoom($id: Int!) {\n    getRoom(id: $id) {\n      ok\n      error\n      room {\n        id\n        users {\n          id\n          username\n          avatar\n          isMe\n        }\n        messages {\n          id\n          payload\n          createdAt\n          author {\n            id\n            username\n            avatar\n            isMe\n          }\n        }\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  subscription OnMessageCreated($roomId: Int!) {\n    roomUpdates(roomId: $roomId) {\n      id\n      payload\n      author {\n        id\n        username\n        avatar\n        isMe\n      }\n      room {\n        id\n      }\n      createdAt\n    }\n  }\n"): (typeof documents)["\n  subscription OnMessageCreated($roomId: Int!) {\n    roomUpdates(roomId: $roomId) {\n      id\n      payload\n      author {\n        id\n        username\n        avatar\n        isMe\n      }\n      room {\n        id\n      }\n      createdAt\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  subscription OnRoomCreated {\n    onRoomCreated {\n      id\n      users {\n        id\n        username\n        avatar\n        isMe\n      }\n      lastMessage {\n        id\n        payload\n        createdAt\n      }\n      unreadMessagesCount\n    }\n  }\n"): (typeof documents)["\n  subscription OnRoomCreated {\n    onRoomCreated {\n      id\n      users {\n        id\n        username\n        avatar\n        isMe\n      }\n      lastMessage {\n        id\n        payload\n        createdAt\n      }\n      unreadMessagesCount\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation sendMessage($roomId: Int, $payload: String!, $receiverId: Int) {\n    sendMessage(roomId: $roomId, payload: $payload, receiverId: $receiverId) {\n      ok\n      error\n      roomId\n    }\n  }\n"): (typeof documents)["\n  mutation sendMessage($roomId: Int, $payload: String!, $receiverId: Int) {\n    sendMessage(roomId: $roomId, payload: $payload, receiverId: $receiverId) {\n      ok\n      error\n      roomId\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

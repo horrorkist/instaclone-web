@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { Outlet, useParams } from "react-router-dom";
+import { Link, Outlet, useParams } from "react-router-dom";
 import { UserQuery, UserQueryVariables } from "../__generated__/graphql";
 import ProfileTabs from "../components/Profile/ProfileTabs";
 import ProfileAvatar from "../components/Profile/ProfileAvatar";
@@ -10,6 +10,7 @@ import ModalOverlay from "../components/ModalOverlay";
 import FollowersModal from "../components/Modals/FollowersModal";
 import FollowingModal from "../components/Modals/FollowingModal";
 import FollowButton from "../components/FollowButton";
+import routes from "../router/routes";
 
 function Profile() {
   const { username } = useParams();
@@ -70,9 +71,12 @@ function Profile() {
               </div>
               <div className="h-10 flex items-center gap-x-4 font-semibold">
                 {data?.getUserByUserName.user?.isMe ? (
-                  <button className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-400">
+                  <Link
+                    to={`${routes.settings}/${routes.editProfile}`}
+                    className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-400"
+                  >
                     Edit Profile
-                  </button>
+                  </Link>
                 ) : (
                   <>
                     <FollowButton
@@ -115,12 +119,7 @@ function Profile() {
               </button>
             </div>
             <div className="line-clamp-3">
-              <h1 className="font-bold">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Et,
-                pariatur. Earum molestiae ab adipisci dolorem maxime
-                reprehenderit blanditiis itaque fugit, cumque accusamus ratione
-                numquam voluptate et facilis quam in doloribus?
-              </h1>
+              <h1 className="font-bold">{data?.getUserByUserName.user?.bio}</h1>
             </div>
           </div>
         </div>

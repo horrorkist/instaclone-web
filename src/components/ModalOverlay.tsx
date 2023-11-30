@@ -15,7 +15,7 @@ function ModalOverlay({
           exit();
         }
       }}
-      className="fixed inset-0 w-screen h-screen bg-black bg-opacity-30 z-20 flex justify-center items-center"
+      className="fixed inset-0 w-screen h-screen bg-black bg-opacity-30 z-40 flex justify-center items-center"
     >
       {children}
     </div>
