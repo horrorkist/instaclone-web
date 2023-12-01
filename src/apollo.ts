@@ -47,7 +47,6 @@ export const logUserOut = () => {
 
 const httpLink = createHttpLink({
   uri: "https://port-0-instaclone-backend-57lz2alpn2fku5.sel4.cloudtype.app/graphql",
-  credentials: "include",
 });
 
 const authLink = new ApolloLink((operation, forward) => {
