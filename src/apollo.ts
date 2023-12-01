@@ -41,6 +41,8 @@ export const logUserIn = (
 export const logUserOut = () => {
   localStorage.removeItem(TOKEN);
   isLoggedInVar(false);
+  userInfoVar({ username: "", avatar: "" });
+  client.cache.reset();
 };
 
 const httpLink = createHttpLink({

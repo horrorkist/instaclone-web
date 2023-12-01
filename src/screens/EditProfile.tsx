@@ -1,7 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useUser from "../hooks/useUser";
 import { getPhotoUrl } from "../libs/utils";
-import Splash from "./Splash";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { useEffect, useState } from "react";
 import client from "../apollo";
@@ -22,6 +21,7 @@ import {
 import { uploadImage } from "../libs/api";
 import CircularLoadingIndicator from "../components/CircularLoadingIndicator";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 interface IEditProfileForm {
   firstName: string;
@@ -71,6 +71,7 @@ function EditProfile() {
     formState: { isValid },
   } = useForm<IEditProfileForm>();
 
+  const { t } = useTranslation();
   const [editLoading, setEditLoading] = useState<boolean>(false);
   const [editNotification, setEditNotification] = useState<
     "" | "ok" | "failed"
@@ -116,7 +117,7 @@ function EditProfile() {
     }
   }, [loading, data, setValue]);
 
-  if (loading) return <Splash />;
+  // if (loading) return <Splash />;
   return (
     <>
       <div className="relative flex flex-col px-10 pt-16">
@@ -127,12 +128,12 @@ function EditProfile() {
             } text-white flex justify-center items-center px-4 py-1 rounded-lg`}
           >
             {editNotification === "ok"
-              ? "Profile saved successfully."
-              : "Failed to save changes."}
+              ? t("editProfile:profileSaved")
+              : t("editProfile:profileSaveFailed")}
           </div>
         )}
         <header>
-          <h2 className="text-2xl font-medium">Edit Profile</h2>
+          <h2 className="text-2xl font-medium">{t("shared:editProfile")}</h2>
         </header>
         <div className="flex flex-col my-20 gap-y-8">
           <div className="flex gap-x-10">
@@ -167,7 +168,7 @@ function EditProfile() {
                   className="invisible absolute w-full h-full"
                 />
                 <span className="text-blue-500 cursor-pointer active:text-blue-300">
-                  Change your avatar
+                  {t("editProfile:changeProfilePhoto")}
                 </span>
               </label>
             </div>
@@ -176,31 +177,35 @@ function EditProfile() {
             <div className="flex flex-col space-y-10">
               <div className="flex gap-x-10">
                 <div className="w-40 flex flex-row-reverse">
-                  <span className=" font-bold">First Name</span>
+                  <span className=" font-bold">
+                    {t("editProfile:firstName")}
+                  </span>
                 </div>
                 <input
                   {...register("firstName", { required: true })}
                   type="text"
-                  className="px-2 py-1 outline-none rounded-md border"
+                  className="px-2 py-1 outline-none rounded-md border dark:bg-black"
                 />
               </div>
               <div className="flex gap-x-10">
                 <div className="w-40 flex flex-row-reverse">
-                  <span className=" font-bold">Last Name</span>
+                  <span className=" font-bold">
+                    {t("editProfile:lastName")}
+                  </span>
                 </div>
                 <input
                   {...register("lastName")}
                   type="text"
-                  className="px-2 py-1 outline-none rounded-md border"
+                  className="px-2 py-1 outline-none rounded-md border dark:bg-black"
                 />
               </div>
               <div className="flex gap-x-10">
                 <div className="w-40 flex flex-row-reverse">
-                  <span className=" font-bold">Bio</span>
+                  <span className=" font-bold">{t("editProfile:bio")}</span>
                 </div>
                 <div className="flex flex-col space-y-2">
                   <textarea
-                    className="border p-2"
+                    className="border p-2 dark:bg-black"
                     {...register("bio", {
                       maxLength: 150,
                       onChange: () => {
@@ -226,7 +231,11 @@ function EditProfile() {
                     isValid ? "bg-blue-500" : "bg-blue-300"
                   } active:bg-blue-400 text-white font-medium`}
                 >
-                  {editLoading ? <CircularLoadingIndicator /> : "Submit"}
+                  {editLoading ? (
+                    <CircularLoadingIndicator />
+                  ) : (
+                    t("editProfile:submit")
+                  )}
                 </button>
               </div>
             </div>

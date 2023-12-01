@@ -56,7 +56,11 @@ function ToggleLikeButton({
           className="text-red-500"
         />
       ) : (
-        <FontAwesomeIcon icon={faHeartRegular} size="xl" />
+        <FontAwesomeIcon
+          icon={faHeartRegular}
+          size="xl"
+          className="text-black dark:text-white"
+        />
       )}
     </button>
   );

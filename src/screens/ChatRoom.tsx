@@ -19,13 +19,16 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { useForm } from "react-hook-form";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
 interface IChatForm {
   payload: string;
 }
 
 function ChatRoom() {
-  const { roomId } = useParams();
+  const { roomId, username } = useParams();
+  const { t } = useTranslation();
 
   const { loading, data, subscribeToMore, client } = useQuery<
     DirectRoomQuery,
@@ -126,6 +129,9 @@ function ChatRoom() {
 
   return (
     <div className="flex flex-col divide-y-2 h-screen w-full">
+      <Helmet>
+        <title>@{username} &bull; Direct</title>
+      </Helmet>
       <div
         ref={setRef}
         className="flex flex-col gap-y-5 p-4 flex-1 overflow-scroll w-full"
@@ -166,8 +172,8 @@ function ChatRoom() {
         <input
           {...register("payload", { required: true })}
           type="text"
-          className="flex-1 p-2 rounded-lg border outline-none"
-          placeholder="Write a message..."
+          className="flex-1 p-2 rounded-lg border outline-none dark:bg-black"
+          placeholder={t("chatRoom:writeAMessage")}
         />
         <button
           disabled={!isValid}
@@ -176,7 +182,9 @@ function ChatRoom() {
           <FontAwesomeIcon
             icon={faPaperPlane}
             className={`${
-              isValid ? "text-black active:text-gray-300" : "text-gray-200"
+              isValid
+                ? "text-black dark:text-white active:text-gray-300"
+                : "text-gray-200"
             }`}
           />
         </button>

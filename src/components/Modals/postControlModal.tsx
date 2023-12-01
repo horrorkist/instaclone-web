@@ -15,6 +15,7 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import CircularLoadingIndicator from "../CircularLoadingIndicator";
 import constants from "../../libs/constants";
+import { useTranslation } from "react-i18next";
 
 interface IPostControlModalProps {
   postId: number;
@@ -34,7 +35,7 @@ function PostControlModal({
   caption,
 }: IPostControlModalProps) {
   const { username } = useParams();
-
+  const { t } = useTranslation();
   const [controlStatus, setControlStatus] = useState<"" | "delete" | "edit">(
     ""
   );
@@ -109,23 +110,27 @@ function PostControlModal({
     return (
       <div
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col rounded-md bg-white w-60 divide-y-2"
+        className="flex flex-col rounded-md bg-white dark:bg-gray-700 dark:text-white w-60 divide-y-2"
       >
         <div className="p-4 flex justify-center items-center w-full">
-          Delete Post?
+          {t("postControlModal:deletePost")}
         </div>
         <div className="flex divide-x-2">
           <button
             onClick={onDeleteClick}
             className="p-4 flex justify-center items-center w-full text-red-500"
           >
-            {loading ? <CircularLoadingIndicator /> : "Delete"}
+            {loading ? (
+              <CircularLoadingIndicator />
+            ) : (
+              t("postControlModal:delete")
+            )}
           </button>
           <button
             onClick={() => setControlStatus("")}
             className="p-4 flex justify-center items-center w-full"
           >
-            Cancel
+            {t("postControlModal:cancel")}
           </button>
         </div>
       </div>
@@ -137,10 +142,10 @@ function PostControlModal({
       <form
         onSubmit={handleSubmit(onEditSubmit)}
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col rounded-md bg-white w-[500px] divide-y-2"
+        className="flex flex-col rounded-md bg-white dark:bg-gray-700 dark:text-white w-[500px] divide-y-2"
       >
         <div className="p-4 flex justify-center items-center w-full font-medium">
-          Caption Edit
+          {t("postControlModal:captionEdit")}
         </div>
         <div className="flex flex-col">
           <textarea
@@ -156,8 +161,8 @@ function PostControlModal({
                 }
               },
             })}
-            className="p-4 resize-none outline-none h-64"
-            placeholder="Please write caption..."
+            className="p-4 resize-none outline-none h-64 dark:bg-gray-700"
+            placeholder={t("postControlModal:writeACaption")}
           ></textarea>
           <div className="text-right p-2 text-gray-400 font-medium">{`${
             watch("caption").length
@@ -165,13 +170,17 @@ function PostControlModal({
         </div>
         <div className="flex divide-x-2">
           <button className="p-4 flex justify-center items-center w-full text-blue-500">
-            {loading ? <CircularLoadingIndicator /> : "Edit"}
+            {loading ? (
+              <CircularLoadingIndicator />
+            ) : (
+              t("postControlModal:edit")
+            )}
           </button>
           <button
             onClick={() => setControlStatus("")}
             className="p-4 flex justify-center items-center w-full"
           >
-            Cancel
+            {t("postControlModal:cancel")}
           </button>
         </div>
       </form>
@@ -181,25 +190,25 @@ function PostControlModal({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="flex flex-col rounded-md bg-white w-60 divide-y-2"
+      className="flex flex-col rounded-md bg-white dark:bg-gray-700 dark:text-white w-60 divide-y-2"
     >
       <button
         onClick={() => setControlStatus("delete")}
         className="p-4 flex justify-center items-center w-full text-red-500"
       >
-        Delete
+        {t("postControlModal:delete")}
       </button>
       <button
         onClick={() => setControlStatus("edit")}
         className="p-4 flex justify-center items-center w-full"
       >
-        Edit
+        {t("postControlModal:edit")}
       </button>
       <button
         onClick={exit}
         className="p-4 flex justify-center items-center w-full"
       >
-        Cancel
+        {t("postControlModal:cancel")}
       </button>
     </div>
   );

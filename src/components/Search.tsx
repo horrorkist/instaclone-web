@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import NameCard from "./NameCard";
 import useSearchHistory from "../hooks/useSearchHistory";
 import CircularLoadingIndicator from "./CircularLoadingIndicator";
+import { useTranslation } from "react-i18next";
 
 function Search() {
   const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
@@ -70,6 +71,8 @@ function Search() {
 
   const { addSearchHistory } = useSearchHistory();
 
+  const { t } = useTranslation();
+
   // search debounce
   useEffect(() => {
     if (timer) clearTimeout(timer);
@@ -86,9 +89,9 @@ function Search() {
   }, [keyword]);
 
   return (
-    <div className="search fixed w-[500px] h-screen bg-white border-r z-20 left-[80px] animate-slide-in-left-to-right  rounded-br-2xl rounded-tr-2xl shadow-xl flex flex-col">
+    <div className="search fixed w-[500px] h-screen bg-white dark:bg-black text-black dark:text-white border-r z-20 left-[80px] animate-slide-in-left-to-right  rounded-br-2xl rounded-tr-2xl shadow-xl flex flex-col">
       <header className="p-5">
-        <h1 className="text-3xl font-bold">Search</h1>
+        <h1 className="text-3xl font-bold">{t("search:search")}</h1>
       </header>
       <div className="py-5 border-b">
         <div className="px-5 relative flex items-center">
@@ -96,8 +99,8 @@ function Search() {
             ref={ref}
             onChange={onChange}
             type="text"
-            className="outline-none bg-gray-100 pl-4 pr-12 py-2 w-full rounded-lg placeholder-gray-500"
-            placeholder="Search"
+            className="outline-none bg-gray-100 pl-4 pr-12 py-2 w-full rounded-lg placeholder-gray-500 text-black"
+            placeholder={t("search:search")}
           />
           <button
             onClick={() => {
@@ -127,7 +130,7 @@ function Search() {
           ) : data?.searchUsers.users?.length === 0 ? (
             <div className="flex flex-1 justify-center items-center">
               <span className="text-sm font-semibold text-gray-400">
-                No results
+                {t("search:noResults")}
               </span>
             </div>
           ) : (

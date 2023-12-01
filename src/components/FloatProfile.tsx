@@ -8,8 +8,10 @@ import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { Link } from "react-router-dom";
 import FollowButton from "./FollowButton";
 import routes from "../router/routes";
+import { useTranslation } from "react-i18next";
 
 function FloatProfile({ username }: { username: string }) {
+  const { t } = useTranslation();
   const { loading, data } = useQuery<UserQuery, UserQueryVariables>(
     PROFILE_QUERY,
     {
@@ -36,7 +38,7 @@ function FloatProfile({ username }: { username: string }) {
   }
 
   return (
-    <div className="flex flex-col w-full h-full pt-4 text-black">
+    <div className="flex flex-col w-full h-full pt-4 text-black dark:text-white bg-white dark:bg-black">
       <Link to={`/${username}`} className="max-w-max">
         <header className="flex gap-x-4 items-center px-4">
           <div className="w-10 h-10 rounded-full bg-gray-300 flex justify-center items-center overflow-hidden">
@@ -62,22 +64,22 @@ function FloatProfile({ username }: { username: string }) {
         <span className="text-center">
           {data?.getUserByUserName.user?.totalPhotos}
           <br />
-          posts
+          {t("shared:posts")}
         </span>
         <span className="text-center">
           {data?.getUserByUserName.user?.totalFollowers}
           <br />
-          followers
+          {t("shared:followers")}
         </span>
         <span className="text-center">
           {data?.getUserByUserName.user?.totalFollowing}
           <br />
-          following
+          {t("shared:following")}
         </span>
       </div>
       {data.getUserByUserName.user.photos.length === 0 ? (
         <div className="flex justify-center items-center h-[100px]">
-          No posts yet
+          {t("floatProfile:noPosts")}
         </div>
       ) : (
         <div className="grid grid-cols-3 gap-1">
@@ -102,7 +104,7 @@ function FloatProfile({ username }: { username: string }) {
             to={`${routes.settings}/${routes.editProfile}`}
             className="py-2 rounded-md w-full bg-blue-500 text-white text-center"
           >
-            Edit Profile
+            {t("shared:editProfile")}
           </Link>
         ) : (
           <FollowButton
@@ -111,7 +113,9 @@ function FloatProfile({ username }: { username: string }) {
             followClassName="py-2 h-10 rounded-md w-full bg-blue-500 text-white flex justify-center items-center"
             unfollowClassName="py-2 h-10 rounded-md w-full bg-gray-300 flex justify-center items-center"
           >
-            {data.getUserByUserName.user.isFollowing ? "Unfollow" : "Follow"}
+            {data.getUserByUserName.user.isFollowing
+              ? t("shared:unfollow")
+              : t("shared:follow")}
           </FollowButton>
         )}
       </div>

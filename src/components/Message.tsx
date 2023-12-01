@@ -11,7 +11,7 @@ function Message({ message, reversed }: { message: any; reversed: boolean }) {
       <div
         className={`flex items-end gap-x-2 ${reversed && "flex-row-reverse"}`}
       >
-        <div className="px-2 py-1 rounded-lg border bg-blue-300 max-w-sm">
+        <div className="px-2 py-1 rounded-lg border bg-blue-300 dark:bg-blue-500 max-w-sm">
           <span className="break-all">{message.payload}</span>
         </div>
         <span className="text-xs text-gray-400">

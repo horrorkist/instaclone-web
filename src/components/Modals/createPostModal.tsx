@@ -28,6 +28,7 @@ import NameCard from "../NameCard";
 import useUser from "../../hooks/useUser";
 import CircularLoadingIndicator from "../CircularLoadingIndicator";
 import constants from "../../libs/constants";
+import { useTranslation } from "react-i18next";
 
 interface IUploadPhotoForm {
   file: FileList;
@@ -35,6 +36,7 @@ interface IUploadPhotoForm {
 }
 
 function CreatePostModal({ exit }: { exit: () => void }) {
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -121,15 +123,15 @@ function CreatePostModal({ exit }: { exit: () => void }) {
     return (
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-[1200px] h-[900px] rounded-xl overflow-hidden bg-white flex flex-col relative animate-fade-in"
+        className="w-[1200px] h-[900px] rounded-xl overflow-hidden border bg-white dark:bg-black text-black dark:text-white flex flex-col relative animate-fade-in"
       >
         {(status === "loading" ||
           status === "completed" ||
           status === "failed") && (
-          <div className="absolute w-full h-full inset-0 bg-white flex justify-center items-center z-10">
+          <div className="absolute w-full h-full inset-0 bg-white dark:bg-black flex justify-center items-center z-10">
             {status === "loading" && (
               <div className="relative w-40 h-40 bg-gradient-to-br from-amber-200 via-red-300 to-violet-500 flex justify-center items-center rounded-full">
-                <div className="w-[150px] h-[150px] rounded-full bg-white"></div>
+                <div className="w-[150px] h-[150px] rounded-full bg-white dark:bg-black"></div>
                 <svg className="w-full h-full absolute inset-0 animate-spin">
                   <circle
                     cx={80}
@@ -138,7 +140,7 @@ function CreatePostModal({ exit }: { exit: () => void }) {
                     stroke="currentColor"
                     strokeWidth={8}
                     fill="transparent"
-                    className="text-white"
+                    className="text-white dark:text-black"
                     strokeDasharray={((2 * 22) / 7) * 80}
                     strokeDashoffset={((2 * 22) / 7) * 80 * 0.8}
                   ></circle>
@@ -156,7 +158,7 @@ function CreatePostModal({ exit }: { exit: () => void }) {
                   onClick={exit}
                   className="px-4 py-2 rounded-lg bg-blue-400 hover:bg-blue-500 active:bg-blue-300 text-white"
                 >
-                  Photo uploaded
+                  {t("createPostModal:photoUploaded")}
                 </button>
               </div>
             )}
@@ -171,7 +173,7 @@ function CreatePostModal({ exit }: { exit: () => void }) {
                   onClick={exit}
                   className="px-4 py-2 rounded-lg bg-red-400 hover:bg-red-500 active:bg-red-300 text-white"
                 >
-                  Failed to upload
+                  {t("createPostModal:failedToUpload")}
                 </button>
               </div>
             )}
@@ -184,17 +186,17 @@ function CreatePostModal({ exit }: { exit: () => void }) {
           >
             <FontAwesomeIcon icon={faXmark} size="xl" />
           </button>
-          <div className="select-none">Create New Post</div>
+          <div className="select-none">{t("createPostModal:title")}</div>
           <button
             onClick={handleSubmit(onSubmit)}
             disabled={!isValid}
             className={`${
               isValid
-                ? "text-blue-500 hover:text-black active:text-gray-300 cursor-pointer"
+                ? "text-blue-500 hover:text-black dark:hover:text-gray-500 active:text-gray-300 cursor-pointer"
                 : "text-gray-300 cursor-default"
             }`}
           >
-            Share
+            {t("createPostModal:share")}
           </button>
         </header>
         <main className="flex">
@@ -208,7 +210,9 @@ function CreatePostModal({ exit }: { exit: () => void }) {
                   size="6x"
                   className="text-gray-500"
                 />
-                <span className="font-medium">Upload your photo</span>
+                <span className="font-medium">
+                  {t("createPostModal:uploadYourPhoto")}
+                </span>
                 <label
                   htmlFor="file"
                   className="flex justify-center items-center relative"
@@ -225,7 +229,7 @@ function CreatePostModal({ exit }: { exit: () => void }) {
                 "
                   />
                   <div className="select-none cursor-pointer rounded-md px-4 py-2 bg-blue-400 hover:bg-blue-500 active:bg-blue-300 text-white font-semibold">
-                    Select from computer
+                    {t("createPostModal:selectFromComputer")}
                   </div>
                 </label>
               </div>
@@ -251,10 +255,10 @@ function CreatePostModal({ exit }: { exit: () => void }) {
                   }
                 },
               })}
-              className="px-4 resize-none outline-none"
+              className="px-4 resize-none outline-none bg-white dark:bg-black"
               cols={30}
               rows={10}
-              placeholder="Write a caption..."
+              placeholder={t("createPostModal:writeACaption")}
             ></textarea>
             <div className="flex justify-between items-center p-4 border-b text-gray-400">
               <FontAwesomeIcon icon={faFaceSmile} size="lg" />
@@ -264,12 +268,14 @@ function CreatePostModal({ exit }: { exit: () => void }) {
               </span>
             </div>
             <div className="p-3 flex justify-between items-center text-gray-500 border-b">
-              <span className="">Add Location Not Supported</span>
+              <span className="">
+                {t("createPostModal:addLocationNotSupported")}
+              </span>
               <FontAwesomeIcon icon={faLocationDot} size="lg" />
             </div>
             <div className="p-3 flex flex-col gap-y-4 border-b">
               <div className="flex justify-between items-center">
-                <span className="">Accessibility</span>
+                <span className="">{t("createPostModal:accessibility")}</span>
                 <button
                   className={`${accessibilityExpanded && "rotate-180"}`}
                   onClick={() => setAccessibilityExpanded((prev) => !prev)}
@@ -281,7 +287,9 @@ function CreatePostModal({ exit }: { exit: () => void }) {
             </div>
             <div className="p-3 flex flex-col gap-y-4 border-b">
               <div className="flex justify-between items-center">
-                <span className="">Advanced Settings</span>
+                <span className="">
+                  {t("createPostModal:advancedSettings")}
+                </span>
                 <button
                   className={`${advancedSettingsExpanded && "rotate-180"}`}
                   onClick={() => setAdvancedSettingsExpanded((prev) => !prev)}

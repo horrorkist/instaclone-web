@@ -27,14 +27,14 @@ function InteractiveUsername({ username }: { username: string }) {
     <span
       onMouseOver={onMouseOver}
       onMouseLeave={onMouseLeave}
-      className="font-medium text-black hover:text-gray-300 text-sm relative"
+      className="font-medium text-black dark:text-white hover:text-gray-300 text-sm relative"
     >
       <Link to={`/${username}`}>{username}</Link>
       {show && (
         <div
           ref={ref}
           onClick={(e) => e.stopPropagation()}
-          className="absolute top-full w-[400px] z-50 overflow-hidden bg-white rounded-lg shadow-float flex justify-center items-center animate-fadeInWithoutScale"
+          className="absolute top-full w-[400px] z-50 overflow-hidden dark:border bg-white rounded-lg shadow-float flex justify-center items-center animate-fadeInWithoutScale"
         >
           <FloatProfile username={username} />
         </div>

@@ -15,8 +15,10 @@ import { useEffect, useState } from "react";
 import ToggleLikeButton from "../components/ToggleLikeButton";
 import ModalOverlay from "../components/ModalOverlay";
 import PostDetail from "./PostDetail";
+import { useTranslation } from "react-i18next";
 
 function Home() {
+  const { t } = useTranslation();
   const { loading, data, fetchMore } = useQuery<
     HomeFeedQuery,
     HomeFeedQueryVariables
@@ -76,24 +78,24 @@ function Home() {
           <PostDetail postId={clickedPostId} exitPostDetail={closeModal} />
         </ModalOverlay>
       )}
-      <div className="flex flex-col divide-y-2">
+      <div className="flex flex-col divide-y-2 bg-white dark:bg-black">
         {data?.getFeed.photos?.map((photo) => {
           return (
             <div
               key={photo?.id}
-              className="py-2 flex flex-col w-[500px] font-medium"
+              className="py-2 flex flex-col w-[500px] font-medium text-dark dark:text-white"
             >
               <header className="flex gap-x-2 items-center py-2 font-bold">
                 <NameCard
                   username={photo?.author.username || ""}
                   avatar={photo?.author.avatar || undefined}
                 />
-                &middot;
+                <span className="text-black dark:text-white">&bull;</span>
                 <span className="text-xs text-gray-400">
                   {formatPhotoCreatedAt(photo?.createdAt || "")}
                 </span>
               </header>
-              <div className="bg-black rounded-md overflow-hidden">
+              <div className="bg-black rounded-md overflow-hidden border">
                 <img
                   src={getPhotoUrl({
                     id: photo?.url || "",
@@ -118,13 +120,19 @@ function Home() {
                   )}
                 </button> */}
               </div>
-              <span>{photo?.likesCount.toLocaleString()} likes</span>
-              <div className="">
-                <InteractiveUsername username={photo?.author.username || ""} />
-                <span className="font-normal text-sm ml-1">
-                  {photo?.caption}
-                </span>
-              </div>
+              <span className="">
+                {photo?.likesCount.toLocaleString()} {t("postDetail:likes")}
+              </span>
+              {photo?.caption && (
+                <div className="">
+                  <InteractiveUsername
+                    username={photo?.author.username || ""}
+                  />
+                  <span className="font-normal text-sm ml-1">
+                    {photo?.caption}
+                  </span>
+                </div>
+              )}
               <div>
                 <button
                   onClick={() => {
@@ -133,10 +141,14 @@ function Home() {
                   }}
                 >
                   <span className="text-gray-400 text-sm">
-                    {photo?.commentsCount === 0 && "Be the first to comment"}
-                    {photo?.commentsCount === 1 && "View 1 comment"}
+                    {photo?.commentsCount === 0 &&
+                      t("postDetail:beTheFirstToComment")}
+                    {photo?.commentsCount === 1 &&
+                      t("postDetail:viewOneComment")}
                     {photo!.commentsCount > 1 === true &&
-                      `View all ${photo?.commentsCount} comment`}
+                      t("postDetail:viewAllComments", {
+                        count: photo?.commentsCount,
+                      })}
                   </span>
                 </button>
               </div>

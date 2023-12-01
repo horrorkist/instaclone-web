@@ -25,6 +25,7 @@ import CircularLoadingIndicator from "../components/CircularLoadingIndicator";
 import ModalOverlay from "../components/ModalOverlay";
 import PostControlModal from "../components/Modals/postControlModal";
 import ToggleLikeButton from "../components/ToggleLikeButton";
+import { useTranslation } from "react-i18next";
 
 interface ICommentForm {
   comment: string;
@@ -37,6 +38,7 @@ function PostDetail({
   postId: number;
   exitPostDetail: () => void;
 }) {
+  const { t } = useTranslation();
   const { loading: postLoading, data: postData } = useQuery<
     PhotoQuery,
     PhotoQueryVariables
@@ -51,7 +53,7 @@ function PostDetail({
   // const [comments, setComments] = useState<any[]>([]);
   const [loadMoreCommentsLoading, setLoadMoreCommentsLoading] =
     useState<boolean>(false);
-  const [reachedCommentEnd, setReachedCommentEnd] = useState<boolean>(false);
+  const [reachedCommentEnd, setReachedCommentEnd] = useState<boolean>(true);
 
   const {
     register,
@@ -84,6 +86,13 @@ function PostDetail({
     variables: {
       photoId: postId,
       skip: 0,
+    },
+    onCompleted(data) {
+      if (data.getPhotoComments.comments?.length === 0) {
+        setReachedCommentEnd(true);
+      } else {
+        setReachedCommentEnd(false);
+      }
     },
   });
 
@@ -211,10 +220,10 @@ function PostDetail({
           />
         </ModalOverlay>
       )}
-      <div className="w-11/12 aspect-video max-h-[96%] flex justify-center items-center">
+      <div className="w-11/12 aspect-video max-h-[96%] flex justify-center items-center text-black dark:text-white">
         <div
           onClick={(e) => e.stopPropagation()}
-          className="h-full max-w-[1196px] max-h-[1196px] aspect-square border-r bg-white"
+          className="h-full max-w-[1196px] max-h-[1196px] aspect-square border-r bg-white dark:bg-black"
         >
           <img
             src={getPhotoUrl({
@@ -226,7 +235,7 @@ function PostDetail({
         </div>
         <div
           onClick={(e) => e.stopPropagation()}
-          className="relative h-full flex-1 rounded-tr-md rounded-br-md bg-white max-w-[500px] flex flex-col"
+          className="relative h-full flex-1 rounded-tr-md rounded-br-md bg-white dark:bg-black max-w-[500px] flex flex-col"
         >
           <div className="flex justify-between items-center">
             <div className="p-4">
@@ -250,14 +259,22 @@ function PostDetail({
             ref={setContentRef}
             className="border-t flex-1 overflow-scroll flex flex-col items-center p-4 gap-y-5"
           >
-            <Comment
-              id={postData?.getPhoto.photo?.id}
-              payload={postData?.getPhoto.photo?.caption || ""}
-              username={postData?.getPhoto.photo?.author.username}
-              avatar={postData?.getPhoto.photo?.author.avatar || undefined}
-              createdAt={postData?.getPhoto.photo?.createdAt}
-              updatedAt={postData?.getPhoto.photo?.updatedAt}
-            />
+            {!postData?.getPhoto.photo?.caption &&
+              commentsData?.getPhotoComments.comments?.length === 0 && (
+                <span className="flex-1 flex justify-center items-center font-medium">
+                  {t("postDetail:beTheFirstToComment")}
+                </span>
+              )}
+            {postData.getPhoto.photo.caption && (
+              <Comment
+                id={postData?.getPhoto.photo?.id}
+                payload={postData?.getPhoto.photo?.caption || ""}
+                username={postData?.getPhoto.photo?.author.username}
+                avatar={postData?.getPhoto.photo?.author.avatar || undefined}
+                createdAt={postData?.getPhoto.photo?.createdAt}
+                updatedAt={postData?.getPhoto.photo?.updatedAt}
+              />
+            )}
             {commentsData?.getPhotoComments?.comments?.map((comment) => {
               if (comment) {
                 return (
@@ -291,7 +308,7 @@ function PostDetail({
           </div>
           <div
             ref={setCommentBoxRef}
-            className="absolute bottom-0 w-full bg-white"
+            className="absolute bottom-0 w-full bg-white dark:bg-black"
           >
             <div className="p-4 flex flex-col gap-y-4 border-y">
               <div className="flex items-center gap-x-5">
@@ -305,7 +322,8 @@ function PostDetail({
               </div>
               <div className="flex flex-col">
                 <span className="font-semibold">
-                  {postData.getPhoto.photo.likesCount.toLocaleString()} likes
+                  {postData.getPhoto.photo.likesCount.toLocaleString()}{" "}
+                  {t("postDetail:likes")}
                 </span>
                 <span className="text-xs text-gray-400">
                   {formatPhotoCreatedAt(postData.getPhoto.photo.createdAt)}
@@ -323,8 +341,8 @@ function PostDetail({
                 <textarea
                   {...register("comment", { required: true, onChange })}
                   rows={1}
-                  className="w-full max-h-24 h-6 outline-none resize-none overflow-scroll"
-                  placeholder="Add a comment..."
+                  className="w-full max-h-24 h-6 outline-none resize-none overflow-scroll dark:bg-black"
+                  placeholder={t("postDetail:addAComment")}
                 ></textarea>
               </div>
               {submitCommentLoading ? (
@@ -340,7 +358,7 @@ function PostDetail({
                       : "text-blue-500 active:text-blue-300"
                   } p-4 `}
                 >
-                  Post
+                  {t("postDetail:post")}
                 </button>
               )}
             </form>

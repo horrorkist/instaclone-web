@@ -11,9 +11,11 @@ import FollowersModal from "../components/Modals/FollowersModal";
 import FollowingModal from "../components/Modals/FollowingModal";
 import FollowButton from "../components/FollowButton";
 import routes from "../router/routes";
+import { useTranslation } from "react-i18next";
 
 function Profile() {
   const { username } = useParams();
+  const { t } = useTranslation();
 
   if (!username) {
     throw new Error("Username is undefined");
@@ -56,7 +58,7 @@ function Profile() {
           <FollowingModal username={username} exit={closeModal} />
         </ModalOverlay>
       )}
-      <main className="w-1/2 min-h-screen max-w-5xl ml-80 flex flex-col">
+      <main className="w-1/2 min-h-screen max-w-5xl ml-80 flex flex-col text-black dark:text-white">
         <div className="flex gap-x-20 px-20 py-10 items-center">
           <ProfileAvatar
             id={data?.getUserByUserName.user?.avatar}
@@ -73,9 +75,9 @@ function Profile() {
                 {data?.getUserByUserName.user?.isMe ? (
                   <Link
                     to={`${routes.settings}/${routes.editProfile}`}
-                    className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-400"
+                    className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-400 dark:bg-gray-500 dark:hover:bg-gray-600"
                   >
-                    Edit Profile
+                    {t("shared:editProfile")}
                   </Link>
                 ) : (
                   <>
@@ -84,14 +86,14 @@ function Profile() {
                       isFollowing={
                         data?.getUserByUserName.user?.isFollowing || false
                       }
-                      followClassName="px-3 py-1 min-w-[80px] h-8 text-white rounded-md bg-blue-400 hover:bg-blue-500 flex justify-center items-center"
-                      unfollowClassName="px-3 py-1 min-w-[80px] h-8 text-black rounded-md bg-gray-200 hover:bg-gray-400 flex justify-center items-center"
+                      followClassName="px-3 py-1 min-w-[80px] h-8 text-white rounded-md bg-blue-400 hover:bg-blue-500  flex justify-center items-center"
+                      unfollowClassName="px-3 py-1 min-w-[80px] h-8 text-black rounded-md bg-gray-200 hover:bg-gray-400 dark:bg-gray-500 dark:hover:bg-gray-600 dark:text-white flex justify-center items-center"
                     >
                       {data?.getUserByUserName.user?.isFollowing
-                        ? "Unfollow"
-                        : "Follow"}
+                        ? t("shared:unfollow")
+                        : t("shared:follow")}
                     </FollowButton>
-                    <button className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-400">
+                    <button className="px-3 py-1 rounded-md bg-gray-200 hover:bg-gray-400 dark:bg-gray-500 dark:hover:bg-gray-600">
                       Message
                     </button>
                   </>
@@ -103,19 +105,19 @@ function Profile() {
                 <span className="font-semibold">
                   {data?.getUserByUserName.user?.totalPhotos}
                 </span>{" "}
-                posts
+                {t("shared:posts")}
               </div>
               <button onClick={() => setInModal("followers")}>
                 <span className="font-semibold">
                   {data?.getUserByUserName.user?.totalFollowers}
                 </span>{" "}
-                followers
+                {t("shared:followers")}
               </button>
               <button onClick={() => setInModal("following")}>
                 <span className="font-semibold">
                   {data?.getUserByUserName.user?.totalFollowing}
                 </span>{" "}
-                following
+                {t("shared:following")}
               </button>
             </div>
             <div className="line-clamp-3">

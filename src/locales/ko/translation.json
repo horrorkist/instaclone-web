@@ -1,0 +1,140 @@
+{
+  "logIn": {
+    "username": "계정",
+    "password": "비밀번호",
+    "submit": "로그인",
+    "forgotPassword": "비밀번호를 잊으셨나요?",
+    "signUp": "가입",
+    "signUpLink": "계정이 없으신가요?",
+    "or": "또는",
+    "logInWithFacebook": "페이스북으로 로그인",
+    "errors": {
+      "userNotFound": "존재하지 않는 계정입니다",
+      "incorrectPassword": "비밀번호가 일치하지 않습니다"
+    }
+  },
+  "signUp": {
+    "title": "친구의 사진을 보려면 가입하세요.",
+    "firstName": "이름",
+    "lastName": "성",
+    "username": "계정",
+    "email": "이메일",
+    "password": "비밀번호",
+    "submit": "가입",
+    "logInLink": "계정이 있으신가요?",
+    "logIn": "로그인",
+    "errors": {
+      "usernameTaken": "계정이나 이메일이 이미 사용 중입니다."
+    }
+  },
+  "sideBar": {
+    "home": "홈",
+    "search": "검색",
+    "messages": "메세지",
+    "create": "만들기",
+    "profile": "프로필",
+    "more": "더 보기"
+  },
+
+  "search": {
+    "search": "검색",
+    "recent": "최근 검색",
+    "clearAll": "초기화",
+    "noResults": "검색 결과가 없습니다",
+    "noRecentSearches": "최근 검색 기록이 없습니다"
+  },
+
+  "messages": {
+    "messages": "메세지",
+    "sendMessage": "메세지 보내기",
+    "title": "친구에게 프라이빗 메세지를 보내세요",
+    "noChatRoom": "메세지가 없습니다"
+  },
+  "sendMessageModal": {
+    "sendMessage": "메세지 보내기",
+    "to": "받을 사람",
+    "searchPlaceholder": "검색...",
+    "writeAMessage": "메세지를 입력하세요..."
+  },
+  "chatRoom": {
+    "writeAMessage": "메세지를 입력하세요..."
+  },
+  "createPostModal": {
+    "title": "새 포스트 생성",
+    "share": "공유",
+    "uploadYourPhoto": "사진을 업로드하세요",
+    "selectFromComputer": "컴퓨터에서 사진 선택",
+    "accessibility": "접근성",
+    "advancedSettings": "고급 설정",
+    "writeACaption": "내용을 입력하세요...",
+    "addLocationNotSupported": "위치 선택 지원하지 않음",
+    "photoUploaded": "사진 업로드 완료",
+    "failedToUpload": "사진 업로드 실패"
+  },
+  "more": {
+    "settings": "설정",
+    "logOut": "로그아웃",
+    "lightMode": "라이트 모드",
+    "darkMode": "다크 모드"
+  },
+  "profile": {
+    "posts": "포스트",
+    "saved": "저장됨",
+    "tagged": "태그됨",
+    "sharePhoto": "사진을 공유하세요",
+    "whenYouShare": "공유한 사진은 프로필에 나타납니다",
+    "shareFirst": "첫 사진을 공유하세요"
+  },
+  "shared": {
+    "posts": "포스트",
+    "followers": "팔로워",
+    "following": "팔로잉",
+    "follow": "팔로우",
+    "unfollow": "언팔로우",
+    "editProfile": "프로필 수정"
+  },
+  "postDetail": {
+    "likes": "좋아요",
+    "comments": "댓글",
+    "addAComment": "댓글을 입력하세요...",
+    "viewOneComment": "댓글 1개 보기",
+    "viewAllComments": "{{count}}개의 모든 댓글 보기",
+    "beTheFirstToComment": "첫 댓글을 달아보세요!",
+    "post": "전송"
+  },
+  "postControlModal": {
+    "delete": "삭제",
+    "cancel": "취소",
+    "edit": "수정",
+    "deletePost": "포스트를 삭제할까요?",
+    "captionEdit": "내용 수정",
+    "writeACaption": "내용을 입력하세요..."
+  },
+  "settings": {
+    "settings": "설정",
+    "editProfile": "프로필 수정",
+    "language": "언어"
+  },
+  "editProfile": {
+    "changeProfilePhoto": "프로필 사진 변경",
+    "firstName": "이름",
+    "lastName": "성",
+    "bio": "소개",
+    "submit": "제출",
+    "profileSaved": "프로필을 성공적으로 수정했습니다.",
+    "profileSaveFailed": "변경사항 저장에 실패했습니다."
+  },
+  "language": {
+    "languagePreferences": "언어 선택",
+    "header": "인스타그램의 버튼, 제목 및 글자를 원하는 언어로 표시하세요."
+  },
+  "floatProfile": {
+    "noPosts": "포스트가 없습니다."
+  },
+  "followersModal": {
+    "noFollower": "팔로워는 이곳에 표시됩니다"
+  },
+  "followingModal": {
+    "noFollowing": "팔로잉은 이곳에 표시됩니다"
+  }
+}

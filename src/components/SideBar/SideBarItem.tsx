@@ -19,7 +19,7 @@ function SideBarItem({
   return (
     <li
       onClick={onClick}
-      className={`${className} cursor-pointer relative group flex gap-x-4 items-center font-medium hover:bg-gray-300 p-4 rounded-md h-12 transition-colors duration-100`}
+      className={`${className} cursor-pointer relative group flex gap-x-4 items-center font-medium hover:bg-gray-200 dark:hover:bg-gray-500 p-4 rounded-md h-12 transition-colors duration-100`}
     >
       <div className="w-5 flex justify-center items-center">
         <FontAwesomeIcon
@@ -36,7 +36,7 @@ function SideBarItem({
         {text}
       </span>
       {!expanded && (
-        <span className="absolute invisible scale-0 group-hover:scale-100 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-500 duration-300 left-full ml-4 px-4 py-2 rounded-md shadow-md border bg-white">
+        <span className="absolute flex whitespace-nowrap invisible scale-0 group-hover:scale-100 opacity-0 group-hover:visible group-hover:opacity-100 group-hover:delay-500 duration-300 left-full ml-4 px-4 py-2 rounded-md shadow-md border bg-white dark:text-black">
           {text}
         </span>
       )}

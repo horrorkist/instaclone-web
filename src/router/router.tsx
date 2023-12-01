@@ -11,6 +11,7 @@ import EditProfile from "../screens/EditProfile";
 import ChatRoomsList from "../screens/ChatRoomsList";
 import ChatRoom from "../screens/ChatRoom";
 import ChatDefault from "../screens/ChatDefault";
+import LanguageSelect from "../screens/LanguageSelect";
 
 const router = createBrowserRouter([
   {
@@ -60,7 +61,7 @@ const router = createBrowserRouter([
           },
           {
             path: routes.languagePreferences,
-            element: <h1>Not Supported</h1>,
+            element: <LanguageSelect />,
             errorElement: <h1>Not Found</h1>,
           },
         ],

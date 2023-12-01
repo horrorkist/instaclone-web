@@ -20,6 +20,7 @@ import useIntersectionObserver from "../../hooks/useIntersectionObserver";
 import CircularLoadingIndicator from "../CircularLoadingIndicator";
 import { useEffect, useState } from "react";
 import client from "../../apollo";
+import { useTranslation } from "react-i18next";
 
 interface IFollowersModalProps {
   exit: () => void;
@@ -39,6 +40,7 @@ function FollowingModal({
     },
   });
 
+  const { t } = useTranslation();
   const { setTarget, isVisible } = useIntersectionObserver();
 
   const [reachEnd, setReachEnd] = useState<boolean>(false);
@@ -158,11 +160,11 @@ function FollowingModal({
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="w-96 rounded-md bg-white h-80 flex flex-col"
+      className="w-96 rounded-md bg-white dark:bg-black dark:text-white h-80 flex flex-col"
     >
       <header className="border-b text-center p-2 items-center">
         <h1 className="font-medium place-self-center m-auto inline">
-          Following
+          {t("shared:following")}
         </h1>
         <button onClick={exit} className="float-right px-1 h-full">
           <FontAwesomeIcon icon={faXmark} className="" />
@@ -192,23 +194,23 @@ function FollowingModal({
                   (follower?.isFollowing ? (
                     <button
                       onClick={() => onUnfollowClick(follower?.username || "")}
-                      className="py-1 px-4 rounded-md w-20 bg-gray-300 text-sm font-semibold flex justify-center items-center"
+                      className="py-1 px-4 whitespace-nowrap rounded-md w-20 bg-gray-300 text-sm font-semibold flex justify-center items-center"
                     >
                       {followLoading === follower?.username ? (
                         <CircularLoadingIndicator />
                       ) : (
-                        "Unfollow"
+                        t("shared:unfollow")
                       )}
                     </button>
                   ) : (
                     <button
                       onClick={() => onFollowClick(follower?.username || "")}
-                      className="py-1 px-4 rounded-md w-20 bg-blue-500 text-white text-sm font-semibold flex justify-center items-center"
+                      className="py-1 px-4 whitespace-nowrap rounded-md w-20 bg-blue-500 text-white text-sm font-semibold flex justify-center items-center"
                     >
                       {followLoading === follower?.username ? (
                         <CircularLoadingIndicator />
                       ) : (
-                        "Follow"
+                        t("shared:follow")
                       )}
                     </button>
                   ))}
@@ -222,7 +224,7 @@ function FollowingModal({
           </>
         ) : (
           <div className="w-full h-full flex justify-center items-center text-xl font-medium text-center px-10">
-            People you follow will be shown here
+            {t("followingModal:noFollowing")}
           </div>
         )}
       </div>

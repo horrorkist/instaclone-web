@@ -1,0 +1,140 @@
+{
+  "logIn": {
+    "username": "Username",
+    "password": "Password",
+    "submit": "Log In",
+    "forgotPassword": "Forgot Password?",
+    "signUp": "Sign Up",
+    "signUpLink": "Don't have an account?",
+    "or": "OR",
+    "logInWithFacebook": "Log In With Facebook",
+    "errors": {
+      "userNotFound": "User not found",
+      "incorrectPassword": "Incorrect password"
+    }
+  },
+  "signUp": {
+    "title": "Sign up to see photos and videos from your friends.",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign Up",
+    "logInLink": "Have an account?",
+    "logIn": "Log In",
+    "errors": {
+      "usernameTaken": "This username/email is already taken."
+    }
+  },
+  "sideBar": {
+    "home": "Home",
+    "search": "Search",
+    "messages": "Message",
+    "create": "Create",
+    "profile": "Profile",
+    "more": "More"
+  },
+
+  "search": {
+    "search": "Search",
+    "recent": "Recent",
+    "clearAll": "Clear All",
+    "noResults": "No results",
+    "noRecentSearches": "No recent searches"
+  },
+
+  "messages": {
+    "messages": "Messages",
+    "sendMessage": "sendMessage",
+    "title": "Send private messages to a friend",
+    "noChatRoom": "You don't have any messages yet"
+  },
+  "sendMessageModal": {
+    "sendMessage": "Send Message",
+    "to": "To",
+    "searchPlaceholder": "Search...",
+    "writeAMessage": "Write a message..."
+  },
+  "chatRoom": {
+    "writeAMessage": "Write a message..."
+  },
+  "createPostModal": {
+    "title": "Create New Post",
+    "share": "Share",
+    "uploadYourPhoto": "Upload Your Photo",
+    "selectFromComputer": "Select From Computer",
+    "accessibility": "Accessibility",
+    "advancedSettings": "Advanced Settings",
+    "writeACaption": "Write a caption...",
+    "addLocationNotSupported": "Add Location Not Supported",
+    "photoUploaded": "Photo uploaded",
+    "failedToUpload": "Failed to upload"
+  },
+  "more": {
+    "settings": "Settings",
+    "logOut": "Log Out",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode"
+  },
+  "profile": {
+    "posts": "POSTS",
+    "saved": "SAVED",
+    "tagged": "TAGGED",
+    "sharePhoto": "Share Photo",
+    "whenYouShare": "When you share photos, they will appear on your profile.",
+    "shareFirst": "Share your first photo"
+  },
+  "shared": {
+    "posts": "posts",
+    "followers": "followers",
+    "following": "following",
+    "follow": "Follow",
+    "unfollow": "Unfollow",
+    "editProfile": "Edit Profile"
+  },
+  "postDetail": {
+    "likes": "likes",
+    "comments": "comments",
+    "addAComment": "Add a comment...",
+    "viewOneComment": "View 1 comment",
+    "viewAllComments": "View all {{count}} comments",
+    "beTheFirstToComment": "Be the first to comment",
+    "post": "Post"
+  },
+  "postControlModal": {
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "deletePost": "Delete Post?",
+    "captionEdit": "Caption Edit",
+    "writeACaption": "Write a caption..."
+  },
+  "settings": {
+    "settings": "Settings",
+    "editProfile": "Edit Profile",
+    "language": "Language"
+  },
+  "editProfile": {
+    "changeProfilePhoto": "Change Profile Photo",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "bio": "Bio",
+    "submit": "Submit",
+    "profileSaved": "Profile saved successfully.",
+    "profileSaveFailed": "Failed to save changes."
+  },
+  "language": {
+    "languagePreferences": "Language Preferences",
+    "header": "See buttons, titles, and other texts on Instagram in your preferred language."
+  },
+  "floatProfile": {
+    "noPosts": "No posts yet"
+  },
+  "followersModal": {
+    "noFollower": "People who follow you will be shown here"
+  },
+  "followingModal": {
+    "noFollowing": "People you follow will be shown here"
+  }
+}

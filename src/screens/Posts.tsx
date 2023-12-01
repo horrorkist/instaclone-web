@@ -13,6 +13,7 @@ import CircularLoadingIndicator from "../components/CircularLoadingIndicator";
 import useIntersectionObserver from "../hooks/useIntersectionObserver";
 import { Helmet } from "react-helmet-async";
 import { FEED_QUERY } from "../libs/queries";
+import { useTranslation } from "react-i18next";
 
 function Posts() {
   const { username } = useParams();
@@ -20,6 +21,8 @@ function Posts() {
   if (!username) {
     throw new Error("Username is undefined");
   }
+
+  const { t } = useTranslation();
 
   const [photos, setPhotos] = useState<any[]>([]);
   const [postId, setPostId] = useState<number>();
@@ -107,20 +110,18 @@ function Posts() {
         <div className="flex flex-col gap-y-4 items-center mt-20">
           <div
             onClick={onCreateClick}
-            className="cursor-pointer w-16 h-16 rounded-full flex justify-center items-center border border-black "
+            className="cursor-pointer w-16 h-16 rounded-full flex justify-center items-center border border-black dark:border-white"
           >
             <FontAwesomeIcon icon={faCamera} size="xl" />
           </div>
           <div className="text-center flex flex-col gap-y-4">
-            <h1 className="text-3xl font-bold">Share Photos</h1>
-            <p className="text-sm font-medium">
-              when you share your photos, they will appear on your profile.
-            </p>
+            <h1 className="text-3xl font-bold">{t("profile:sharePhoto")}</h1>
+            <p className="text-sm font-medium">{t("profile:whenYouShare")}</p>
             <strong
               onClick={onCreateClick}
-              className="text-blue-500 hover:text-black cursor-pointer"
+              className="text-blue-500 hover:text-black dark:hover:text-gray-500 cursor-pointer"
             >
-              Share your first photo
+              {t("profile:shareFirst")}
             </strong>
           </div>
         </div>

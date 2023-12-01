@@ -17,6 +17,8 @@ import Avatar from "../components/Avatar";
 import Splash from "./Splash";
 import { formatPhotoCreatedAt } from "../libs/utils";
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
 function ChatRoomsList() {
   const { loading, data, subscribeToMore } = useQuery<
@@ -24,6 +26,7 @@ function ChatRoomsList() {
     DirectRoomsQueryVariables
   >(DIRECT_ROOMS_QUERY);
   const { username } = useParams();
+  const { t } = useTranslation();
 
   // Subscribe to new messages
   useEffect(() => {
@@ -121,16 +124,19 @@ function ChatRoomsList() {
   if (loading) return <Splash />;
 
   return (
-    <div className="w-full h-screen bg-white flex pl-72">
-      <aside className="w-72 h-full border-r bg-white flex flex-col pt-10">
+    <div className="w-full h-screen bg-white dark:bg-black text-black dark:text-white flex pl-72">
+      <Helmet>
+        <title>Inbox &bull; Direct</title>
+      </Helmet>
+      <aside className="w-80 bg-white dark:bg-black h-full border-r flex flex-col pt-10">
         <header className="p-4">
-          <h1 className="text-2xl font-bold px-4">Messages</h1>
+          <h1 className="text-2xl font-bold px-4">{t("messages:messages")}</h1>
         </header>
         <div className="flex flex-col gap-y-2 h-full">
           {data?.getRooms.rooms?.length === 0 && (
             <div className="flex flex-col items-center justify-center flex-1">
               <span className="text-gray-400 text-sm">
-                You don't have any messages yet
+                {t("messages:noChatRoom")}
               </span>
             </div>
           )}
@@ -153,11 +159,11 @@ function ChatRoomsList() {
                   <div className="relative flex items-start gap-x-2">
                     <Avatar avatar={roommate.avatar || undefined} size="lg" />
                     <span className="font-medium">{roommate.username}</span>
-                    {room.unreadMessagesCount > 0 && (
+                    {/* {room.unreadMessagesCount > 0 && (
                       <div className="right-0 absolute flex justify-center items-center text-white font-medium bg-red-500 rounded-full p-1 text-xs">
                         10
                       </div>
-                    )}
+                    )} */}
                   </div>
                   <div className=" w-full text-sm leading-4 text-gray-500 flex items-center">
                     <span className="flex-1 overflow-ellipsis line-clamp-2 break-all">

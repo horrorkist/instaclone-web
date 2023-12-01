@@ -16,6 +16,7 @@ import Avatar from "../Avatar";
 import { faPaperPlane } from "@fortawesome/free-regular-svg-icons";
 import client from "../../apollo";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface ICreateChatForm {
   target: string;
@@ -35,6 +36,8 @@ function SendMessageModal() {
   const [loadMoreLoading, setLoadMoreLoading] = useState<boolean>(false);
   const ref = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const [sendingMessage, setSendingMessage] = useState<boolean>(false);
+  const { t } = useTranslation();
 
   const { data, refetch, fetchMore } = useQuery<
     SearchUsersQuery,
@@ -90,6 +93,7 @@ function SendMessageModal() {
     setLoadMoreLoading(false);
   };
 
+  // Debounce Search
   useEffect(() => {
     if (timer) clearTimeout(timer);
 
@@ -105,6 +109,7 @@ function SendMessageModal() {
     }
   }, [target]);
 
+  // Set value when selectedUsername changes
   useEffect(() => {
     if (selectedUsername) {
       setValue("target", selectedUsername);
@@ -116,6 +121,8 @@ function SendMessageModal() {
 
   const onSubmit = async (data: ICreateChatForm) => {
     if (!target || !selectedUsername) return;
+
+    setSendingMessage(true);
 
     const result = await client.mutate<
       SendMessageMutation,
@@ -142,19 +149,21 @@ function SendMessageModal() {
     }
   };
 
+  if (sendingMessage) return <CircularLoadingIndicator size="lg" />;
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       onClick={(e) => e.stopPropagation()}
-      className="bg-white w-[500px] rounded-lg flex flex-col"
+      className="bg-white dark:bg-black w-[500px] max-h-[95%] rounded-lg flex flex-col border"
     >
       <header>
         <h2 className="w-full text-center py-2 border-b font-semibold text-sm">
-          Send Message
+          {t("sendMessageModal:sendMessage")}
         </h2>
       </header>
-      <div className="flex gap-x-4 px-4 py-2 border-b">
-        <span className="font-medium">To:</span>
+      <div className="flex gap-x-4 px-4 py-2 border-b whitespace-nowrap">
+        <span className="font-medium">{t("sendMessageModal:to")}:</span>
         <input
           ref={ref}
           {...(register("target"),
@@ -164,8 +173,8 @@ function SendMessageModal() {
           })}
           required={false}
           type="text"
-          className="w-full outline-none placeholder-gray-400 text-sm"
-          placeholder="Search..."
+          className="w-full outline-none placeholder-gray-400 text-sm dark:bg-black"
+          placeholder={t("sendMessageModal:searchPlaceholder")}
         />
         <button
           onClick={() => {
@@ -201,7 +210,7 @@ function SendMessageModal() {
                         setSelectedUsername(user.username);
                         setSelectedUserId(user.id);
                       }}
-                      className="p-2 flex justify-between hover:bg-gray-100 rounded-lg"
+                      className="p-2 flex justify-between hover:bg-gray-100 dark:hover:bg-gray-500 rounded-lg"
                       key={user.id}
                     >
                       <div className="flex gap-x-2 items-center">
@@ -246,8 +255,8 @@ function SendMessageModal() {
         <input
           {...register("payload", { required: true })}
           type="text"
-          className="flex-1 p-2 outline-none rounded-lg border"
-          placeholder="Write a message..."
+          className="flex-1 p-2 outline-none rounded-lg border dark:bg-black"
+          placeholder={t("sendMessageModal:writeAMessage")}
         />
         <button
           disabled={!selectedUsername || watch("payload").length === 0}
