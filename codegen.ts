@@ -2,7 +2,7 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "http://localhost:4000/",
+  schema: import.meta.env.VITE_GRAPHQL_SCHEMA,
 
   generates: {
     "src/__generated__/": {

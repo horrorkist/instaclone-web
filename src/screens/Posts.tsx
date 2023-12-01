@@ -87,7 +87,7 @@ function Posts() {
   const closeModal = () => setInModal("");
 
   const onCreateClick = () => setInModal("create");
-  const onPostClick = (post) => {
+  const onPostClick = (post: any) => {
     setPostId(post.id);
     setInModal("post");
   };

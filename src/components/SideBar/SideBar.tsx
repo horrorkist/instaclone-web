@@ -37,7 +37,7 @@ function SideBar() {
 
   // shrink more when clicked out of the more expanded
   useEffect(() => {
-    const setMoreExpandedFalse = (e) => {
+    const setMoreExpandedFalse = (e: any) => {
       const more = document.querySelector(".more");
       if (more?.contains(e.target)) return;
       setMoreExpanded(false);
@@ -53,7 +53,7 @@ function SideBar() {
 
   // shrink search when clicked out of sidebar
   useEffect(() => {
-    const setSearchExpandedFalse = (e) => {
+    const setSearchExpandedFalse = (e: any) => {
       const sidebar = document.querySelector(".sidebar");
       const search = document.querySelector(".search");
       if (sidebar?.contains(e.target)) return;

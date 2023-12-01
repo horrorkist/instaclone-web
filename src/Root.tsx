@@ -6,7 +6,7 @@ import useDarkMode from "./hooks/useDarkMode";
 
 function Root() {
   const { loading } = useUser();
-  const { toggleTheme } = useDarkMode();
+  useDarkMode();
 
   if (loading) {
     return <Splash />;
