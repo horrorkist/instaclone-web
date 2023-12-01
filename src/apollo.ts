@@ -46,7 +46,7 @@ export const logUserOut = () => {
 };
 
 const httpLink = createHttpLink({
-  uri: "http://port-0-instaclone-backend-57lz2alpn2fku5.sel4.cloudtype.app/",
+  uri: "https://port-0-instaclone-backend-57lz2alpn2fku5.sel4.cloudtype.app/",
 });
 
 const authLink = new ApolloLink((operation, forward) => {
