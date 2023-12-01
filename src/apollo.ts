@@ -46,7 +46,7 @@ export const logUserOut = () => {
 };
 
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_HTTPS_LINK,
+  uri: process.env.VITE_HTTPS_LINK as string,
 });
 
 const authLink = new ApolloLink((operation, forward) => {
@@ -63,7 +63,7 @@ const authLink = new ApolloLink((operation, forward) => {
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: import.meta.env.VITE_WS_LINK,
+    url: process.env.VITE_WS_LINK as string,
     connectionParams: {
       token: localStorage.getItem(TOKEN),
     },
