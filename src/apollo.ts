@@ -46,7 +46,7 @@ export const logUserOut = () => {
 };
 
 const httpLink = createHttpLink({
-  uri: "https://port-0-instaclone-backend-57lz2alpn2fku5.sel4.cloudtype.app",
+  uri: "https://port-0-instaclone-backend-57lz2alpn2fku5.sel4.cloudtype.app/graphql",
 });
 
 const authLink = new ApolloLink((operation, forward) => {
@@ -63,7 +63,7 @@ const authLink = new ApolloLink((operation, forward) => {
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://port-0-instaclone-backend-57lz2alpn2fku5.sel4.cloudtype.app",
+    url: "ws://port-0-instaclone-backend-57lz2alpn2fku5.sel4.cloudtype.app/graphql",
     connectionParams: {
       token: localStorage.getItem(TOKEN),
     },
