@@ -26,6 +26,9 @@ function Home() {
     variables: {
       page: 1,
     },
+    onCompleted(data) {
+      data.getFeed.photos?.length === 0 && setReachEnd(true);
+    },
   });
 
   const { setTarget, isVisible } = useIntersectionObserver();
@@ -78,7 +81,7 @@ function Home() {
           <PostDetail postId={clickedPostId} exitPostDetail={closeModal} />
         </ModalOverlay>
       )}
-      <div className="flex flex-col divide-y-2 bg-white dark:bg-black">
+      <div className="flex min-h-screen flex-col divide-y-2 bg-white dark:bg-black">
         {data?.getFeed.photos?.map((photo) => {
           return (
             <div
@@ -162,6 +165,9 @@ function Home() {
           >
             <CircularLoadingIndicator size="lg" />
           </div>
+        )}
+        {reachEnd && (
+          <div className="dark:text-white">you've all caught up.</div>
         )}
       </div>
     </>
