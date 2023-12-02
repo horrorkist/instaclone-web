@@ -63,7 +63,7 @@ const authLink = new ApolloLink((operation, forward) => {
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://instabackend-5lae.onrender.com/graphql",
+    url: "wss://instabackend-5lae.onrender.com/graphql",
     connectionParams: {
       token: localStorage.getItem(TOKEN),
     },
