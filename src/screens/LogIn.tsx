@@ -13,7 +13,7 @@ import {
 } from "../__generated__/graphql";
 import { gql, useMutation } from "@apollo/client";
 import { logUserIn } from "../apollo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface ILoginForm {
   username: string;
@@ -49,6 +49,8 @@ function LogIn() {
 
   const navigate = useNavigate();
 
+  const [showWakeupHint, setShowWakeupHint] = useState<boolean>(true);
+
   const onCompleted = (data: LoginMutation) => {
     const { ok, error, token } = data.login!;
 
@@ -82,6 +84,17 @@ function LogIn() {
       },
     });
   };
+
+  useEffect(() => {
+    if (!loading) {
+      setShowWakeupHint(false);
+      return;
+    }
+
+    const t = setTimeout(() => setShowWakeupHint(true), 5000);
+
+    return () => clearTimeout(t);
+  }, [loading]);
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
@@ -134,18 +147,32 @@ function LogIn() {
               {errors.password?.message}
             </div>
           )}
-          {/* <Separator text="OR" />
-          <div className="flex flex-col items-center gap-4 text-blue-900">
+          {/* <Separator text="OR" /> */}
+          {/* <div className="flex flex-col items-center gap-4 text-blue-900">
             <div className="flex justify-center items-center gap-2 font-semibold">
-              <FontAwesomeIcon icon={faFacebook} />
-              <span>Log in with Facebook</span>
+            <FontAwesomeIcon icon={faFacebook} />
+            <span>Log in with Facebook</span>
             </div>
             <div className="">
-              <Link to={"/"} className="text-xs cursor-pointer">
-                Forgot password?
-              </Link>
+            <Link to={"/"} className="text-xs cursor-pointer">
+            Forgot password?
+            </Link>
             </div>
-          </div> */}
+            </div> */}
+          {showWakeupHint && loading && (
+            <>
+              <div className="border-t border-gray-400"></div>
+              <div className="rounded-md bg-amber-50 text-amber-800 p-2 text-xs font-semibold">
+                <p>Note</p>
+                <br />
+                <p>서버가 잠들어 있을 수 있어요. (Render 무료 플랜)</p>
+                <br />
+                <p>처음 요청은 10~30초 정도 걸릴 수 있습니다.</p>
+                <br />
+                <p>잠시만 기다려주세요.</p>
+              </div>
+            </>
+          )}
         </div>
         <div className="border p-4 flex justify-center text-sm border-gray-300 font-semibold">
           <span>Don't have an account?&nbsp;</span>
