@@ -220,7 +220,7 @@ function PostDetail({
           />
         </ModalOverlay>
       )}
-      <div className="w-11/12 aspect-video max-h-[96%] flex justify-center items-center text-black dark:text-white">
+      <div className="w-[95vw] h-[90vh] flex justify-center items-center text-black dark:text-white">
         <div
           onClick={(e) => e.stopPropagation()}
           className="h-full max-w-[1196px] max-h-[1196px] aspect-square border-r bg-white dark:bg-black"
@@ -235,7 +235,7 @@ function PostDetail({
         </div>
         <div
           onClick={(e) => e.stopPropagation()}
-          className="relative h-full flex-1 rounded-tr-md rounded-br-md bg-white dark:bg-black max-w-[500px] flex flex-col"
+          className="relative h-full flex-1 rounded-tr-md rounded-br-md bg-white dark:bg-black max-w-[500px] flex flex-col overflow-hidden"
         >
           <div className="flex justify-between items-center">
             <div className="p-4">
@@ -257,7 +257,7 @@ function PostDetail({
           </div>
           <div
             ref={setContentRef}
-            className="border-t flex-1 overflow-scroll flex flex-col items-center p-4 gap-y-5"
+            className="border-t flex-1 min-h-0 overflow-y-auto flex flex-col items-center p-4 gap-y-5"
           >
             {!postData?.getPhoto.photo?.caption &&
               commentsData?.getPhotoComments.comments?.length === 0 && (
@@ -308,7 +308,7 @@ function PostDetail({
           </div>
           <div
             ref={setCommentBoxRef}
-            className="absolute bottom-0 w-full bg-white dark:bg-black"
+            className="shrink-0 w-full bg-white dark:bg-black"
           >
             <div className="p-4 flex flex-col gap-y-4 border-y">
               <div className="flex items-center gap-x-5">
@@ -341,7 +341,7 @@ function PostDetail({
                 <textarea
                   {...register("comment", { required: true, onChange })}
                   rows={1}
-                  className="w-full max-h-24 h-6 outline-none resize-none overflow-scroll dark:bg-black"
+                  className="w-full max-h-24 h-6 outline-none resize-none overflow-y-auto dark:bg-black"
                   placeholder={t("postDetail:addAComment")}
                 ></textarea>
               </div>

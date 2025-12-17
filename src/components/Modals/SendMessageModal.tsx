@@ -190,7 +190,7 @@ function SendMessageModal() {
           <FontAwesomeIcon icon={faXmark} />
         </button>
       </div>
-      <div className="h-[600px] flex flex-col p-4 gap-y-4 overflow-scroll">
+      <div className="h-[600px] flex flex-col p-4 gap-y-4 overflow-y-auto">
         {searchLoading && <SearchSkeleton />}
         {!searchLoading &&
           (data?.searchUsers.users?.filter((user) => user?.isMe === false)
