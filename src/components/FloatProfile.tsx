@@ -47,7 +47,7 @@ function FloatProfile({ username }: { username: string }) {
                 src={getPhotoUrl({
                   id: data?.getUserByUserName.user?.avatar || "",
                 })}
-                className="object-cover"
+                className="object-cover w-full h-full block"
               />
             ) : (
               <FontAwesomeIcon

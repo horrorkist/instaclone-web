@@ -16,7 +16,10 @@ function Avatar({
       )} rounded-full flex justify-center items-center overflow-hidden bg-gray-200`}
     >
       {avatar ? (
-        <img src={getPhotoUrl({ id: avatar })} className="object-cover" />
+        <img
+          src={getPhotoUrl({ id: avatar })}
+          className="object-cover block w-full h-full"
+        />
       ) : (
         <FontAwesomeIcon icon={faUser} className="text-gray-500" />
       )}

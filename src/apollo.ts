@@ -46,7 +46,8 @@ export const logUserOut = () => {
 };
 
 const httpLink = createHttpLink({
-  uri: "https://instabackend-5lae.onrender.com/graphql",
+  // uri: "https://instabackend-5lae.onrender.com/graphql",
+  uri: "http://localhost:4000/graphql",
 });
 
 const authLink = new ApolloLink((operation, forward) => {
@@ -63,7 +64,8 @@ const authLink = new ApolloLink((operation, forward) => {
 
 const wsLink = new GraphQLWsLink(
   createClient({
-    url: "ws://instabackend-5lae.onrender.com/graphql",
+    // url: "ws://instabackend-5lae.onrender.com/graphql",
+    url: "ws://localhost:4000/graphql",
     connectionParams: {
       token: localStorage.getItem(TOKEN),
     },

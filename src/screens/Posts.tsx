@@ -145,13 +145,14 @@ function Posts() {
               <div
                 onClick={() => onPostClick(photo)}
                 key={photo?.id}
-                className="aspect-square flex relative group cursor-pointer"
+                className="aspect-square flex relative group cursor-pointer overflow-hidden"
               >
                 <img
                   src={getPhotoUrl({
                     id: photo!.url,
                   })}
-                  className="object-cover"
+                  className="object-cover w-full h-full block"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 w-full h-full invisible group-hover:visible bg-black bg-opacity-30 flex items-center justify-center gap-x-4">
                   <div className="text-white flex gap-x-2 items-center">

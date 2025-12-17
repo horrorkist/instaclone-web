@@ -123,7 +123,7 @@ function CreatePostModal({ exit }: { exit: () => void }) {
     return (
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-[1200px] h-[900px] rounded-xl overflow-hidden border bg-white dark:bg-black text-black dark:text-white flex flex-col relative animate-fade-in"
+        className="w-[95vw] h-[90vh] max-w-[1100px] max-h-[720px] rounded-xl overflow-hidden border bg-white dark:bg-black text-black dark:text-white flex flex-col relative animate-fade-in"
       >
         {(status === "loading" ||
           status === "completed" ||
@@ -179,7 +179,7 @@ function CreatePostModal({ exit }: { exit: () => void }) {
             )}
           </div>
         )}
-        <header className="flex justify-between px-4 py-2 border-b flex-1 items-center font-medium">
+        <header className="flex justify-between px-4 py-2 border-b shrink-0 items-center font-medium">
           <button
             onClick={exit}
             className="flex justify-center items-center active:text-gray-300"
@@ -199,105 +199,114 @@ function CreatePostModal({ exit }: { exit: () => void }) {
             {t("createPostModal:share")}
           </button>
         </header>
-        <main className="flex">
-          <div className="w-[855px] h-[855px] border-r flex justify-center items-center">
-            {preview ? (
-              <img src={preview} className="object-cover" />
-            ) : (
-              <div className="flex flex-col gap-y-4 items-center">
-                <FontAwesomeIcon
-                  icon={faImage}
-                  size="6x"
-                  className="text-gray-500"
+        <main className="flex flex-col lg:flex-row flex-1 min-h-0">
+          <div className="lg:w-[60%] w-full border-b lg:border-b-0 lg:border-r flex items-center justify-center bg-black/5 dark:bg-white/5">
+            <div className="w-full aspect-square lg:aspect-auto lg:h-full overflow-hidden flex items-center justify-center">
+              {preview ? (
+                <img
+                  src={preview}
+                  className="object-cover block w-full h-full"
                 />
-                <span className="font-medium">
-                  {t("createPostModal:uploadYourPhoto")}
-                </span>
-                <label
-                  htmlFor="file"
-                  className="flex justify-center items-center relative"
-                >
-                  <input
-                    {...register("file", {
-                      required: true,
-                      onChange: handleChange,
-                    })}
-                    id="file"
-                    type="file"
-                    accept="image/*"
-                    className="invisible absolute
-                "
+              ) : (
+                <div className="flex flex-col gap-y-4 items-center">
+                  <FontAwesomeIcon
+                    icon={faImage}
+                    size="6x"
+                    className="text-gray-500"
                   />
-                  <div className="select-none cursor-pointer rounded-md px-4 py-2 bg-blue-400 hover:bg-blue-500 active:bg-blue-300 text-white font-semibold">
-                    {t("createPostModal:selectFromComputer")}
-                  </div>
-                </label>
-              </div>
-            )}
+                  <span className="font-medium">
+                    {t("createPostModal:uploadYourPhoto")}
+                  </span>
+                  <label
+                    htmlFor="file"
+                    className="flex justify-center items-center relative"
+                  >
+                    <input
+                      {...register("file", {
+                        required: true,
+                        onChange: handleChange,
+                      })}
+                      id="file"
+                      type="file"
+                      accept="image/*"
+                      className="invisible absolute
+                "
+                    />
+                    <div className="select-none cursor-pointer rounded-md px-4 py-2 bg-blue-400 hover:bg-blue-500 active:bg-blue-300 text-white font-semibold">
+                      {t("createPostModal:selectFromComputer")}
+                    </div>
+                  </label>
+                </div>
+              )}
+            </div>
           </div>
-          <div className="flex flex-col flex-1 font-medium">
-            <div className="p-4">
+          <div className="flex flex-col flex-1 font-medium min-h-0">
+            <div className="p-4 shrink-0">
               <NameCard
                 username={data.me.me!.username!}
                 avatar={data.me.me!.avatar || undefined}
               />
             </div>
-            <textarea
-              {...register("caption", {
-                maxLength: constants.MAX_CAPTION_LIMIT,
-                onChange: () => {
-                  const caption = getValues("caption");
-                  if (caption && caption.length > constants.MAX_CAPTION_LIMIT) {
-                    setValue(
-                      "caption",
-                      caption.slice(0, constants.MAX_CAPTION_LIMIT)
-                    );
-                  }
-                },
-              })}
-              className="px-4 resize-none outline-none bg-white dark:bg-black"
-              cols={30}
-              rows={10}
-              placeholder={t("createPostModal:writeACaption")}
-            ></textarea>
-            <div className="flex justify-between items-center p-4 border-b text-gray-400">
-              <FontAwesomeIcon icon={faFaceSmile} size="lg" />
-              <span className="text-sm">
-                {watch("caption")?.length}/
-                {constants.MAX_CAPTION_LIMIT.toLocaleString()}
-              </span>
-            </div>
-            <div className="p-3 flex justify-between items-center text-gray-500 border-b">
-              <span className="">
-                {t("createPostModal:addLocationNotSupported")}
-              </span>
-              <FontAwesomeIcon icon={faLocationDot} size="lg" />
-            </div>
-            <div className="p-3 flex flex-col gap-y-4 border-b">
-              <div className="flex justify-between items-center">
-                <span className="">{t("createPostModal:accessibility")}</span>
-                <button
-                  className={`${accessibilityExpanded && "rotate-180"}`}
-                  onClick={() => setAccessibilityExpanded((prev) => !prev)}
-                >
-                  <FontAwesomeIcon icon={faChevronDown} size="lg" />
-                </button>
-              </div>
-              {accessibilityExpanded && <span>Not Supported</span>}
-            </div>
-            <div className="p-3 flex flex-col gap-y-4 border-b">
-              <div className="flex justify-between items-center">
-                <span className="">
-                  {t("createPostModal:advancedSettings")}
+            <div className="flex-1 min-h-0 overflow-y-auto">
+              <textarea
+                {...register("caption", {
+                  maxLength: constants.MAX_CAPTION_LIMIT,
+                  onChange: () => {
+                    const caption = getValues("caption");
+                    if (
+                      caption &&
+                      caption.length > constants.MAX_CAPTION_LIMIT
+                    ) {
+                      setValue(
+                        "caption",
+                        caption.slice(0, constants.MAX_CAPTION_LIMIT)
+                      );
+                    }
+                  },
+                })}
+                className="px-4 resize-none outline-none bg-white dark:bg-black"
+                rows={6}
+                placeholder={t("createPostModal:writeACaption")}
+              ></textarea>
+              <div className="flex justify-between items-center p-4 border-b text-gray-400">
+                <FontAwesomeIcon icon={faFaceSmile} size="lg" />
+                <span className="text-sm">
+                  {watch("caption")?.length}/
+                  {constants.MAX_CAPTION_LIMIT.toLocaleString()}
                 </span>
-                <button
-                  className={`${advancedSettingsExpanded && "rotate-180"}`}
-                  onClick={() => setAdvancedSettingsExpanded((prev) => !prev)}
-                >
-                  <FontAwesomeIcon icon={faChevronDown} size="lg" />
-                </button>
               </div>
-              {advancedSettingsExpanded && <span>Not Supported</span>}
+              <div className="p-3 flex justify-between items-center text-gray-500 border-b">
+                <span className="">
+                  {t("createPostModal:addLocationNotSupported")}
+                </span>
+                <FontAwesomeIcon icon={faLocationDot} size="lg" />
+              </div>
+              <div className="p-3 flex flex-col gap-y-4 border-b">
+                <div className="flex justify-between items-center">
+                  <span className="">{t("createPostModal:accessibility")}</span>
+                  <button
+                    className={`${accessibilityExpanded && "rotate-180"}`}
+                    onClick={() => setAccessibilityExpanded((prev) => !prev)}
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} size="lg" />
+                  </button>
+                </div>
+                {accessibilityExpanded && <span>Not Supported</span>}
+              </div>
+              <div className="p-3 flex flex-col gap-y-4 border-b">
+                <div className="flex justify-between items-center">
+                  <span className="">
+                    {t("createPostModal:advancedSettings")}
+                  </span>
+                  <button
+                    className={`${advancedSettingsExpanded && "rotate-180"}`}
+                    onClick={() => setAdvancedSettingsExpanded((prev) => !prev)}
+                  >
+                    <FontAwesomeIcon icon={faChevronDown} size="lg" />
+                  </button>
+                </div>
+                {advancedSettingsExpanded && <span>Not Supported</span>}
+              </div>
             </div>
           </div>
         </main>

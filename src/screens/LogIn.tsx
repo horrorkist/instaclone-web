@@ -42,8 +42,8 @@ function LogIn() {
     getValues,
   } = useForm<ILoginForm>({
     defaultValues: {
-      username: state?.username,
-      password: state?.password,
+      username: "daehan",
+      password: "password123!",
     },
   });
 
@@ -136,7 +136,7 @@ function LogIn() {
               {errors.password?.message}
             </div>
           )}
-          <Separator text="OR" />
+          {/* <Separator text="OR" />
           <div className="flex flex-col items-center gap-4 text-blue-900">
             <div className="flex justify-center items-center gap-2 font-semibold">
               <FontAwesomeIcon icon={faFacebook} />
@@ -147,7 +147,7 @@ function LogIn() {
                 Forgot password?
               </Link>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="border p-4 flex justify-center text-sm border-gray-300 font-semibold">
           <span>Don't have an account?&nbsp;</span>

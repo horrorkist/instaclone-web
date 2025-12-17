@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 
 function Home() {
   const { t } = useTranslation();
-  const { loading, data, fetchMore } = useQuery<
+  const { loading, data, fetchMore, error } = useQuery<
     HomeFeedQuery,
     HomeFeedQueryVariables
   >(HOME_FEED_QUERY, {
@@ -66,6 +66,12 @@ function Home() {
       });
     }
   }, [isVisible]);
+
+  useEffect(() => {
+    if (error) {
+      console.log(error);
+    }
+  }, [error]);
 
   if (loading) {
     return <Splash />;

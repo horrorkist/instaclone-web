@@ -69,7 +69,7 @@ function ProfileAvatar({ id, isMe }: { id?: string | null; isMe: boolean }) {
           <img
             src={getPhotoUrl({ id: avatar })}
             alt=""
-            className="object-cover"
+            className="object-cover w-full h-full overflow-hidden"
           />
         ) : (
           <FontAwesomeIcon icon={faUser} size="3x" className="text-gray-300" />
