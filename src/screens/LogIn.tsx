@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebook, faInstagram } from "@fortawesome/free-brands-svg-icons";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import Separator from "../components/Separator";
+import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../components/auth/Input";
 import Button from "../components/auth/Button";
 import routes from "../router/routes";
@@ -34,7 +33,6 @@ const LOGIN = gql(`
 `);
 
 function LogIn() {
-  const { state } = useLocation();
   const {
     handleSubmit,
     control,
