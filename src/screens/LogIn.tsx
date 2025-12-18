@@ -91,7 +91,7 @@ function LogIn() {
       return;
     }
 
-    const t = setTimeout(() => setShowWakeupHint(true), 5000);
+    const t = setTimeout(() => setShowWakeupHint(true), 3000);
 
     return () => clearTimeout(t);
   }, [loading]);
@@ -167,9 +167,9 @@ function LogIn() {
                 <br />
                 <p>서버가 잠들어 있을 수 있어요. (Render 무료 플랜)</p>
                 <br />
-                <p>처음 요청은 10~30초 정도 걸릴 수 있습니다.</p>
+                <p>처음 요청은 1분 이상 걸릴 수 있습니다.</p>
                 <br />
-                <p>잠시만 기다려주세요.</p>
+                <p>대기가 오래 지속된다면, 잠시 후에 다시 시도해주세요.</p>
               </div>
             </>
           )}
